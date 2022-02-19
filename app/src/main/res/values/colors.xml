@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_white">#ECF0F1</color>
+    <color name="secondary">#101010</color>
+    <color name="activity_bg">#090909</color>
+    <color name="selection">#333333</color>
+    <color name="primary">#fc3a3a</color>
+    <color name="button">#ab0000</color>
+    <color name="playlist_activity_start_background">#6E0001</color>
+    <color name="playlist_activity_middle_background">#130000</color>
+    <color name="playlist_activity_play_button_bg">#0B0B0B</color>
+    <color name="playlist_activity_play_button_text">#ECF0F1</color>
+    <color name="playlist_activity_shuffle_button_bg">#0B0B0B</color>
+    <color name="playlist_activity_shuffle_button_text">#ECF0F1</color>
+    <color name="mini_player_bg_color">#181818</color>
+    <color name="remote_list_item">#300000</color>
+</resources>

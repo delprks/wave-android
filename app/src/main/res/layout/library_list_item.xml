@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50sp"
+    android:clickable="true"
+    android:padding="4sp"
+    android:layout_marginBottom="2sp"
+    android:background="@drawable/list_item_background"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="342dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="Link your library!"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/light_white"
+        android:textSize="@dimen/list_item_text_size"
+        />
+
+    <ImageView
+        android:id="@+id/library_love"
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_marginLeft="2dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/unloved_track" />
+
+    <TextView
+        android:id="@+id/library_options"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="&#8942;"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_marginTop="2sp"
+        android:textColor="@color/white" />
+</LinearLayout>
