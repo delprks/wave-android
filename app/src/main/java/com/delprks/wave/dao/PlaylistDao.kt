@@ -73,13 +73,13 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addTrackPlaylistRelations(playlistTrackRelation: List<PlaylistTrackEntity>)
 
-    @Query("SELECT * FROM trackentity WHERE track_id IN (:ids)")
+    @Query("SELECT * FROM trackentity WHERE track_id IN (:ids) ORDER BY title COLLATE NOCASE ASC")
     fun getTracksById(ids: List<String>): List<TrackEntity>
 
     @Query("SELECT * FROM trackentity WHERE track_id = :id")
     fun getTrackById(id: String): TrackEntity
 
-    @Query("SELECT * FROM trackentity WHERE location = :location")
+    @Query("SELECT * FROM trackentity WHERE location = :location ORDER BY title COLLATE NOCASE ASC")
     fun getTracksByLocation(location: ContainerLocation): List<TrackEntity>
 
     @Query("SELECT * FROM playlistentity WHERE playlist_id = :id")
