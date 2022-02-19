@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/playlist_edit_details"
+        android:title="Edit playlist details"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/playlist_remove"
+        android:title="Delete playlist"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/playlist_and_tracks_remove"
+        android:title="Delete playlist and downloaded tracks"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/player_love_track"
+        android:title="Love"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/player_unlove_track"
+        android:title="Unlove"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/player_download_track"
+        android:title="Download"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/player_delete_track"
+        android:title="Delete"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/player_remove_track_from_playlist"
+        android:title="Remove from playlist"
+        app:showAsAction="always" />
+</menu>

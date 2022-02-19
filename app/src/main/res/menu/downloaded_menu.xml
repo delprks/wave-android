@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    <item-->
+<!--        android:id="@+id/downloaded_add_to_playlist"-->
+<!--        android:title="Add to playlist"-->
+<!--        app:showAsAction="always" />-->
+
+    <item
+        android:id="@+id/downloaded_remove"
+        android:title="Delete"
+        app:showAsAction="always" />
+</menu>

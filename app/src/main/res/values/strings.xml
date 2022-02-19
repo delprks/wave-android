@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Wave</string>
+    <string name="music_title">Music title</string>
+    <string name="title_activity_tabbed_home">TabbedHomeActivity</string>
+    <string name="tab_title_1">Home</string>
+    <string name="tab_title_2">Library</string>
+    <string name="tab_title_3">Downloads</string>
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing in Wave</string>
+    <string name="create_new_playlist_menu_item">Create playlist</string>
+    <string name="downloads_playlist_name">Downloads</string>
+    <string name="loved_tracks_playlist_name">Loved Tracks</string>
+    <string name="playlist_activity_track_count_text">%1$d TRACKS</string>
+    <string name="playlist_activity_play_button">Play</string>
+    <string name="playlist_activity_shuffle_button">Shuffle</string>
+    <string name="player_track_title_txt">%1$s</string>
+    <string name="player_track_by_txt">BY</string>
+    <string name="player_track_artist_txt">%1$s</string>
+    <string name="playlist_details_modify_playlist_name">Title:</string>
+    <string name="playlist_details_modify_save_btn_txt">SAVE</string>
+    <string name="playlist_item_count_txt">%1$s tracks</string>
+</resources>

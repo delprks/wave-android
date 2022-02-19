@@ -1,0 +1,65 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="exo_play_btn">
+        <item name="android:src">@drawable/exo_play</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
+    <style name="exo_pause_btn">
+        <item name="android:src">@drawable/exo_pause</item>
+        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
+    <style name="exo_next_btn">
+        <item name="android:src">@drawable/exo_next</item>
+        <item name="android:contentDescription">@string/exo_controls_next_description</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
+    <style name="exo_prev_btn">
+        <item name="android:src">@drawable/exo_prev</item>
+        <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
+
+    <style name="mini_exo_play_btn">
+        <item name="android:src">@drawable/mini_exo_play</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+        <item name="android:layout_height">68dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+    <style name="mini_exo_pause_btn">
+        <item name="android:src">@drawable/mini_exo_pause</item>
+        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+        <item name="android:layout_height">68dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+    <style name="mini_exo_next_btn">
+        <item name="android:src">@drawable/mini_exo_next</item>
+        <item name="android:contentDescription">@string/exo_controls_next_description</item>
+        <item name="android:layout_height">68dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+    <style name="mini_exo_prev_btn">
+        <item name="android:src">@drawable/mini_exo_previous</item>
+        <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+        <item name="android:layout_height">68dp</item>
+        <item name="android:layout_width">40dp</item>
+    </style>
+
+</resources>
