@@ -4,8 +4,6 @@ Wave is a media player capable of playing local and remote music over the networ
 
 _This application is under active development._
 
-<p align="center">
-    <img src="misc/images/app_home.png" alt="Wave Media Player" width="300"/>
-</p>
+<img style="float: center;" src="misc/images/app_home.png" alt="Wave Media Player" width="270"/>
 
-Licence can be found [here](LICENCE.md)
+Licence can be found [here](LICENCE.md).
