@@ -108,7 +108,7 @@ object PlaylistService {
                 playlistWithTracks.playlist.name,
                 playlistWithTracks.tracks.size,
                 playlistWithTracks.playlist.imageUri,
-                playlistWithTracks.tracks.map { trackEntity ->
+                playlistWithTracks.tracks.sortedBy { it.title }.map { trackEntity ->
                     TrackContainer(
                         trackEntity.trackId,
                         trackEntity.title,
