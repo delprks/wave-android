@@ -22,7 +22,7 @@ class WebDavResourceRetriever {
             var resources: List<DavResource> = ArrayList()
 
             try {
-                resources = server.list(path).sortedBy { it.name }
+                resources = server.list(path)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
