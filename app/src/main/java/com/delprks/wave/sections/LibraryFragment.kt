@@ -201,6 +201,14 @@ class LibraryFragment : Fragment() {
                 }
             }
 
+            if (path != "$remoteHostFullPath/") {
+                val head = containers.removeAt(0)
+                containers.sortBy { it.name }
+                containers.add(0, head)
+            } else {
+                containers.sortBy { it.name }
+            }
+
             containers
         }
     }
@@ -251,6 +259,8 @@ class LibraryFragment : Fragment() {
                     )
                 }
             }
+
+            remoteContainers.sortBy { it.name }
 
             LibraryListViewRecyclerAdapter(remoteContainers, requireActivity(), db, libraryFragment, lovedTracks)
         }
