@@ -56,7 +56,6 @@ class PlaylistsListViewRecyclerAdapter(
         holder.playlistName.text = TextFormatter.shorten(playlist.name, 23)
         holder.playlistSize.text = parentActivity!!.resources.getString(R.string.playlist_item_count_txt, playlist.size)
 
-        App.setCurrentPlaylist(playlist)
         val playlistDetailsFragment = PlaylistDetailsFragment()
 
         when (playlist.id) {
@@ -89,6 +88,8 @@ class PlaylistsListViewRecyclerAdapter(
             notifyItemChanged(selectedPos)
             selectedPos = holder.bindingAdapterPosition
             notifyItemChanged(selectedPos)
+
+            App.setCurrentPlaylist(playlists[selectedPos])
 
             CoroutineScope(Dispatchers.Main).launch {
                 (parentActivity as TabbedHomeActivity).supportFragmentManager
