@@ -27,11 +27,22 @@ object MetadataRetriever {
         val title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
         val artist = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
         val art = mediaMetadataRetriever.embeddedPicture
+        val genre = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE)
+        val duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.let { it.toLong() / 1000 } // ms to s
+        val yearCreated = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR)?.toInt()
 
-        return TrackMetadata(title, artist, null, art)
+        return TrackMetadata(title, artist, null, art, genre, duration, yearCreated)
     }
 
-    data class TrackMetadata(var title: String?, var artist: String?, var image: Bitmap?, var imageByteArray: ByteArray?) {
+    data class TrackMetadata(
+        var title: String?,
+        var artist: String?,
+        var image: Bitmap?,
+        var imageByteArray: ByteArray?,
+        val genre: String?,
+        val duration: Long?,
+        val yearCreated: Int?
+    ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -45,6 +56,9 @@ object MetadataRetriever {
                 if (other.imageByteArray == null) return false
                 if (!imageByteArray.contentEquals(other.imageByteArray)) return false
             } else if (other.imageByteArray != null) return false
+            if (genre != other.genre) return false
+            if (duration != other.duration) return false
+            if (yearCreated != other.yearCreated) return false
 
             return true
         }
@@ -54,6 +68,9 @@ object MetadataRetriever {
             result = 31 * result + (artist?.hashCode() ?: 0)
             result = 31 * result + (image?.hashCode() ?: 0)
             result = 31 * result + (imageByteArray?.contentHashCode() ?: 0)
+            result = 31 * result + (genre?.hashCode() ?: 0)
+            result = 31 * result + (duration?.hashCode() ?: 0)
+            result = 31 * result + (yearCreated ?: 0)
             return result
         }
     }
