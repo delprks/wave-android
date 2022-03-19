@@ -21,17 +21,24 @@ object MetadataRetriever {
             mediaMetadataRetriever.setDataSource(fd)
             fileInputStream.close()
         } else {
-            mediaMetadataRetriever.setDataSource(path, SettingsManager.getAuthMap(App.applicationContext()))
+            mediaMetadataRetriever.setDataSource(
+                path,
+                SettingsManager.getAuthMap(App.applicationContext())
+            )
         }
 
-        val title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-        val artist = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        val title =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        val artist =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
         val art = mediaMetadataRetriever.embeddedPicture
-        val genre = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE)
-        val duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.let { it.toLong() / 1000 } // ms to s
-        val yearCreated = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR)?.toInt()
+        val genre =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE)
+        val duration =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                ?.let { it.toLong() / 1000 } // ms to s
 
-        return TrackMetadata(title, artist, null, art, genre, duration, yearCreated)
+        return TrackMetadata(title, artist, null, art, genre, duration)
     }
 
     data class TrackMetadata(
@@ -40,8 +47,7 @@ object MetadataRetriever {
         var image: Bitmap?,
         var imageByteArray: ByteArray?,
         val genre: String?,
-        val duration: Long?,
-        val yearCreated: Int?
+        val duration: Long?
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -58,7 +64,6 @@ object MetadataRetriever {
             } else if (other.imageByteArray != null) return false
             if (genre != other.genre) return false
             if (duration != other.duration) return false
-            if (yearCreated != other.yearCreated) return false
 
             return true
         }
@@ -70,7 +75,6 @@ object MetadataRetriever {
             result = 31 * result + (imageByteArray?.contentHashCode() ?: 0)
             result = 31 * result + (genre?.hashCode() ?: 0)
             result = 31 * result + (duration?.hashCode() ?: 0)
-            result = 31 * result + (yearCreated ?: 0)
             return result
         }
     }

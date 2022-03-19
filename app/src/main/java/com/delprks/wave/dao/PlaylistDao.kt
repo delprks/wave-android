@@ -34,11 +34,11 @@ interface PlaylistDao {
     @Update
     fun updatePlaylists(playlist: List<PlaylistEntity>)
 
-    @Query("SELECT * FROM trackstatusentity WHERE id=:id")
-    fun getTrackStatus(id: String): TrackStatusEntity?
+    @Query("SELECT * FROM latesttrackentity WHERE id=:id")
+    fun getLatestTrack(id: String): LatestTrackEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun updateTrackStatus(trackStatusEntity: TrackStatusEntity)
+    fun updateLatestTrack(latestTrackEntity: LatestTrackEntity)
 
     @Transaction
     fun addPlaylist(playlist: PlaylistEntity) {

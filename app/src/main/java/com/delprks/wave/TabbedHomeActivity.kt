@@ -120,7 +120,7 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         // load latest played track/playlist
         CoroutineScope(Dispatchers.Main).launch {
-            val latestTrack = PlaylistService.getLatestTrackStatus(App.getDB())
+            val latestTrack = PlaylistService.getLatestTrack(App.getDB())
 
             latestTrack?.let { trackStatus ->
                 Log.d("home", "loaded track is $trackStatus")
