@@ -18,5 +18,5 @@
     <string name="player_track_artist_txt">%1$s</string>
     <string name="playlist_details_modify_playlist_name">Title:</string>
     <string name="playlist_details_modify_save_btn_txt">SAVE</string>
-    <string name="playlist_item_count_txt">%1$s tracks</string>
+    <string name="playlist_item_count_txt">%1$s tracks (%2$s)</string>
 </resources>
