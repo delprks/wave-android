@@ -210,7 +210,12 @@ class DownloadListViewRecyclerAdapter(
                         trackFromDB.image,
                         trackFromDB.imageByteArray,
                         trackFromDB.imageBitmapUri,
-                        trackFromDB.artist
+                        trackFromDB.artist,
+                        trackFromDB.loved,
+                        trackFromDB.genre,
+                        trackFromDB.duration,
+                        trackFromDB.created,
+                        trackFromDB.modified
                     )
                 )
             )

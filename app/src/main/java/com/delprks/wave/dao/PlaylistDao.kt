@@ -34,11 +34,11 @@ interface PlaylistDao {
     @Update
     fun updatePlaylists(playlist: List<PlaylistEntity>)
 
-    @Query("SELECT * FROM trackstatusentity WHERE id=:id")
-    fun getTrackStatus(id: String): TrackStatusEntity?
+    @Query("SELECT * FROM latesttrackentity WHERE id=:id")
+    fun getLatestTrack(id: String): LatestTrackEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun updateTrackStatus(trackStatusEntity: TrackStatusEntity)
+    fun updateLatestTrack(latestTrackEntity: LatestTrackEntity)
 
     @Transaction
     fun addPlaylist(playlist: PlaylistEntity) {
@@ -73,13 +73,13 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addTrackPlaylistRelations(playlistTrackRelation: List<PlaylistTrackEntity>)
 
-    @Query("SELECT * FROM trackentity WHERE track_id IN (:ids) ORDER BY title COLLATE NOCASE ASC")
+    @Query("SELECT * FROM trackentity WHERE track_id IN (:ids) ORDER BY modified")
     fun getTracksById(ids: List<String>): List<TrackEntity>
 
     @Query("SELECT * FROM trackentity WHERE track_id = :id")
     fun getTrackById(id: String): TrackEntity
 
-    @Query("SELECT * FROM trackentity WHERE location = :location ORDER BY title COLLATE NOCASE ASC")
+    @Query("SELECT * FROM trackentity WHERE location = :location ORDER BY modified")
     fun getTracksByLocation(location: ContainerLocation): List<TrackEntity>
 
     @Query("SELECT * FROM playlistentity WHERE playlist_id = :id")
@@ -101,6 +101,8 @@ interface PlaylistDao {
         val tracksForPlaylist = getTrackPlaylistRelationByPlaylistId(playlistId)
 
         playlistWithoutTracks.size = tracksForPlaylist.size
+        val duration = tracks.sumOf { it.duration ?: run { 0L } }
+        playlistWithoutTracks.duration = duration
         playlistWithoutTracks.modified = Date()
 
         updatePlaylist(playlistWithoutTracks)

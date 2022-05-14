@@ -21,17 +21,34 @@ object MetadataRetriever {
             mediaMetadataRetriever.setDataSource(fd)
             fileInputStream.close()
         } else {
-            mediaMetadataRetriever.setDataSource(path, SettingsManager.getAuthMap(App.applicationContext()))
+            mediaMetadataRetriever.setDataSource(
+                path,
+                SettingsManager.getAuthMap(App.applicationContext())
+            )
         }
 
-        val title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-        val artist = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        val title =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        val artist =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
         val art = mediaMetadataRetriever.embeddedPicture
+        val genre =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE)
+        val duration =
+            mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                ?.let { it.toLong() / 1000 } // ms to s
 
-        return TrackMetadata(title, artist, null, art)
+        return TrackMetadata(title, artist, null, art, genre, duration)
     }
 
-    data class TrackMetadata(var title: String?, var artist: String?, var image: Bitmap?, var imageByteArray: ByteArray?) {
+    data class TrackMetadata(
+        var title: String?,
+        var artist: String?,
+        var image: Bitmap?,
+        var imageByteArray: ByteArray?,
+        val genre: String?,
+        val duration: Long?
+    ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -45,6 +62,8 @@ object MetadataRetriever {
                 if (other.imageByteArray == null) return false
                 if (!imageByteArray.contentEquals(other.imageByteArray)) return false
             } else if (other.imageByteArray != null) return false
+            if (genre != other.genre) return false
+            if (duration != other.duration) return false
 
             return true
         }
@@ -54,6 +73,8 @@ object MetadataRetriever {
             result = 31 * result + (artist?.hashCode() ?: 0)
             result = 31 * result + (image?.hashCode() ?: 0)
             result = 31 * result + (imageByteArray?.contentHashCode() ?: 0)
+            result = 31 * result + (genre?.hashCode() ?: 0)
+            result = 31 * result + (duration?.hashCode() ?: 0)
             return result
         }
     }

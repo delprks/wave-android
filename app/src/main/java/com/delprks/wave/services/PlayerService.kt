@@ -28,7 +28,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.delprks.wave.App
 import com.delprks.wave.NotificationManager
 import com.delprks.wave.domain.TrackContainer
-import com.delprks.wave.domain.TrackStatus
+import com.delprks.wave.domain.LatestTrack
 import com.delprks.wave.security.SettingsManager
 import com.google.android.exoplayer2.C.WAKE_MODE_NETWORK
 import com.google.android.exoplayer2.ExoPlayer
@@ -176,7 +176,7 @@ class PlayerService : Service() {
                     activity.findViewById<ImageView>(R.id.mini_player_track_image).setImageURI(tracksMap[mediaItem?.mediaId]?.imageBitmapUri)
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val trackStatus = TrackStatus(
+                        val trackStatus = LatestTrack(
                             trackPosition = player.currentMediaItemIndex,
                             trackProgress = 0,
                             shuffled = player.shuffleModeEnabled,
@@ -212,7 +212,7 @@ class PlayerService : Service() {
 
         if (!initial) {
             CoroutineScope(Dispatchers.Main).launch {
-                val trackStatus = TrackStatus(
+                val trackStatus = LatestTrack(
                     trackPosition = position,
                     trackProgress = 0,
                     shuffled = shuffled,

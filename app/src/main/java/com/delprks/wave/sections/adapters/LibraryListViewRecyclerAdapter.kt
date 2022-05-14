@@ -150,7 +150,11 @@ class LibraryListViewRecyclerAdapter(
                         trackMetadata.imageByteArray,
                         null,
                         trackMetadata.artist,
-                        item.loved
+                        item.loved,
+                        trackMetadata.genre,
+                        trackMetadata.duration,
+                        item.created,
+                        item.modified
                     )
 
                     PlaylistService.loveTrack(db, trackContainer)
@@ -195,28 +199,15 @@ class LibraryListViewRecyclerAdapter(
                     notifyDataSetChanged()
                 }
             } else {
-                val tracks = remoteContainers.filter { it.type == ContainerType.FILE }
+                val tracks = remoteContainers.filter { it.type == ContainerType.FILE }.map { it as TrackContainer }
+
                 tracks.forEach { t -> t.order = tracks.indexOf(t) }
 
                 val trackPosition = tracks.indexOf(remoteContainers[position])
 
-                val trackContainers = tracks.map { t ->
-                    TrackContainer(
-                        t.id,
-                        t.name,
-                        t.path,
-                        t.location,
-                        t.order,
-                        null,
-                        null,
-                        null,
-                        null
-                    )
-                }
+                val dirName = tracks[0].path.dropLastWhile { it != '/' }
 
-                val dirName = trackContainers[0].path.dropLastWhile { it != '/' }
-
-                context.playerService()?.loadSongs(parentActivity, trackContainers, dirName, null, false)
+                context.playerService()?.loadSongs(parentActivity, tracks, dirName, null, false)
                 context.playerService()?.play(trackPosition)
             }
         }
@@ -674,6 +665,7 @@ class LibraryListViewRecyclerAdapter(
                         MetadataRetriever.getTrackMetadata(destination, ContainerLocation.LOCAL)
 
                     val title = if (trackMetadata.title == null) "Unknown track" else trackMetadata.title
+                    val currentDate = Date()
 
                     val newTrack = TrackContainer(
                         downloadName.hashCode().toString(),
@@ -684,7 +676,12 @@ class LibraryListViewRecyclerAdapter(
                         trackMetadata.image,
                         trackMetadata.imageByteArray,
                         null,
-                        trackMetadata.artist
+                        trackMetadata.artist,
+                        false,
+                        trackMetadata.genre,
+                        trackMetadata.duration,
+                        currentDate,
+                        currentDate
                     )
 
                     val tracksAddedToPlaylist = PlaylistService.addTracksToPlaylist(
@@ -717,6 +714,7 @@ class LibraryListViewRecyclerAdapter(
             val trackMetadata = MetadataRetriever.getTrackMetadata(path, location)
 
             val title = if (trackMetadata.title == null) "Unknown track" else trackMetadata.title
+            val currentDate = Date()
 
             val trackContainer = TrackContainer(
                 trackName.hashCode().toString(),
@@ -727,7 +725,12 @@ class LibraryListViewRecyclerAdapter(
                 trackMetadata.image,
                 trackMetadata.imageByteArray,
                 null,
-                trackMetadata.artist
+                trackMetadata.artist,
+                false,
+                trackMetadata.genre,
+                trackMetadata.duration,
+                currentDate,
+                currentDate
             )
 
             PlaylistService.addTracksToPlaylist(db, playlist.id, listOf(trackContainer))

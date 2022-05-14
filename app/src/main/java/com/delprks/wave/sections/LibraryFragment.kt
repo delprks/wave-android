@@ -24,6 +24,9 @@ import com.delprks.wave.util.ReservedPlaylists
 import com.delprks.wave.util.SupportedContent
 import kotlinx.coroutines.*
 import wave.R
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class LibraryFragment : Fragment() {
 
@@ -183,6 +186,7 @@ class LibraryFragment : Fragment() {
                     val name = explodedResource[explodedResource.size - 1]
 
                     val loved = lovedTracks.contains(resourceName)
+                    val currentDate = Date()
 
                     containers.add(
                         TrackContainer(
@@ -195,7 +199,11 @@ class LibraryFragment : Fragment() {
                             null,
                             null,
                             null,
-                            loved
+                            loved,
+                            null,
+                            null,
+                            currentDate,
+                            currentDate
                         )
                     )
                 }
@@ -242,6 +250,7 @@ class LibraryFragment : Fragment() {
                     val name = explodedResource[explodedResource.size - 1]
 
                     val loved = lovedTracks.contains(resourceName)
+                    val currentDate = Date()
 
                     remoteContainers.add(
                         TrackContainer(
@@ -254,7 +263,11 @@ class LibraryFragment : Fragment() {
                             null,
                             null,
                             null,
-                            loved
+                            loved,
+                            null,
+                            null,
+                            currentDate,
+                            currentDate
                         )
                     )
                 }

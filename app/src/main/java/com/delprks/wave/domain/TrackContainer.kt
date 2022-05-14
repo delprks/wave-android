@@ -2,6 +2,7 @@ package com.delprks.wave.domain
 
 import android.graphics.Bitmap
 import android.net.Uri
+import java.util.*
 
 data class TrackContainer(
     override var id: String,
@@ -13,10 +14,12 @@ data class TrackContainer(
     var imageByteArray: ByteArray?,
     var imageBitmapUri: Uri?,
     var artist: String?,
-    var loved: Boolean = false
-):
-    Container(id, name, path, ContainerType.FILE, location, order) {
-
+    var loved: Boolean = false,
+    val genre: String?,
+    val duration: Long?,
+    val created: Date?,
+    val modified: Date?
+) : Container(id, name, path, ContainerType.FILE, location, order) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -33,8 +36,13 @@ data class TrackContainer(
             if (other.imageByteArray == null) return false
             if (!imageByteArray.contentEquals(other.imageByteArray)) return false
         } else if (other.imageByteArray != null) return false
+        if (imageBitmapUri != other.imageBitmapUri) return false
         if (artist != other.artist) return false
         if (loved != other.loved) return false
+        if (genre != other.genre) return false
+        if (duration != other.duration) return false
+        if (created != other.created) return false
+        if (modified != other.modified) return false
 
         return true
     }
@@ -47,8 +55,13 @@ data class TrackContainer(
         result = 31 * result + order
         result = 31 * result + (image?.hashCode() ?: 0)
         result = 31 * result + (imageByteArray?.contentHashCode() ?: 0)
+        result = 31 * result + (imageBitmapUri?.hashCode() ?: 0)
         result = 31 * result + (artist?.hashCode() ?: 0)
         result = 31 * result + loved.hashCode()
+        result = 31 * result + (genre?.hashCode() ?: 0)
+        result = 31 * result + (duration?.hashCode() ?: 0)
+        result = 31 * result + (created?.hashCode() ?: 0)
+        result = 31 * result + modified.hashCode()
         return result
     }
 }

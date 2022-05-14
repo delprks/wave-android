@@ -3,6 +3,7 @@ package com.delprks.wave.sections.adapters
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
+import android.text.format.DateUtils
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -54,7 +55,8 @@ class PlaylistsListViewRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val playlist = playlists[position]
         holder.playlistName.text = TextFormatter.shorten(playlist.name, 23)
-        holder.playlistSize.text = parentActivity!!.resources.getString(R.string.playlist_item_count_txt, playlist.size)
+        val playlistDuration = DateUtils.formatElapsedTime(playlist.duration)
+        holder.playlistSize.text = parentActivity!!.resources.getString(R.string.playlist_item_count_txt, playlist.size, playlistDuration)
 
         val playlistDetailsFragment = PlaylistDetailsFragment()
 

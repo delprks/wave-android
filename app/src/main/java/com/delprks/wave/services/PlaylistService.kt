@@ -8,8 +8,8 @@ import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.dao.AppDatabase
 import com.delprks.wave.dao.PlaylistEntity
 import com.delprks.wave.dao.TrackEntity
-import com.delprks.wave.dao.TrackStatusEntity
-import com.delprks.wave.domain.TrackStatus
+import com.delprks.wave.dao.LatestTrackEntity
+import com.delprks.wave.domain.LatestTrack
 import com.delprks.wave.util.ImageCache
 import com.delprks.wave.util.MetadataRetriever
 import kotlinx.coroutines.Dispatchers
@@ -39,30 +39,30 @@ object PlaylistService {
         }
     }
 
-    suspend fun updateTrackStatus(db: AppDatabase, trackStatus: TrackStatus) {
+    suspend fun updateTrackStatus(db: AppDatabase, latestTrack: LatestTrack) {
         return withContext(Dispatchers.IO) {
             val playlistDao = db.playlistDao()
 
-            val trackStatusEntity = TrackStatusEntity(
-                trackStatus.id,
-                trackStatus.trackPosition,
-                trackStatus.trackProgress,
-                trackStatus.shuffled,
-                trackStatus.playlistId
+            val trackStatusEntity = LatestTrackEntity(
+                latestTrack.id,
+                latestTrack.trackPosition,
+                latestTrack.trackProgress,
+                latestTrack.shuffled,
+                latestTrack.playlistId
             )
 
-            playlistDao.updateTrackStatus(trackStatusEntity)
+            playlistDao.updateLatestTrack(trackStatusEntity)
         }
     }
 
-    suspend fun getLatestTrackStatus(db: AppDatabase): TrackStatus? {
+    suspend fun getLatestTrack(db: AppDatabase): LatestTrack? {
         return withContext(Dispatchers.IO) {
             val playlistDao = db.playlistDao()
 
-            val trackStatus = playlistDao.getTrackStatus("latest")
+            val trackStatus = playlistDao.getLatestTrack("latest")
 
             trackStatus?.let {
-                TrackStatus(
+                LatestTrack(
                     trackStatus.id,
                     trackStatus.trackPosition,
                     trackStatus.trackProgress,
@@ -120,7 +120,11 @@ object PlaylistService {
                         trackEntity.imageByteArray,
                         trackEntity.imageBitmapUri?.let { Uri.parse("${App.applicationContext().cacheDir}${trackEntity.imageBitmapUri}") },
                         trackEntity.artist,
-                        trackEntity.loved
+                        trackEntity.loved,
+                        trackEntity.genre,
+                        trackEntity.duration,
+                        trackEntity.created,
+                        trackEntity.modified
                     )
                 },
                 playlistWithTracks.playlist.order,
@@ -148,7 +152,11 @@ object PlaylistService {
                     trackEntity.imageByteArray,
                     trackEntity.imageBitmapUri?.let { Uri.parse("${App.applicationContext().cacheDir}${trackEntity.imageBitmapUri}") },
                     trackEntity.artist,
-                    trackEntity.loved
+                    trackEntity.loved,
+                    trackEntity.genre,
+                    trackEntity.duration,
+                    trackEntity.created,
+                    trackEntity.modified
                 )
             }
         }
@@ -170,7 +178,11 @@ object PlaylistService {
                 trackEntity.imageByteArray,
                 trackEntity.imageBitmapUri?.let { Uri.parse("${App.applicationContext().cacheDir}${trackEntity.imageBitmapUri}") },
                 trackEntity.artist,
-                trackEntity.loved
+                trackEntity.loved,
+                trackEntity.genre,
+                trackEntity.duration,
+                trackEntity.created,
+                trackEntity.modified
             )
         }
     }
@@ -194,7 +206,11 @@ object PlaylistService {
                     trackEntity.imageByteArray,
                     trackEntity.imageBitmapUri?.let { Uri.parse("${App.applicationContext().cacheDir}${trackEntity.imageBitmapUri}") },
                     trackEntity.artist,
-                    trackEntity.loved
+                    trackEntity.loved,
+                    trackEntity.genre,
+                    trackEntity.duration,
+                    trackEntity.created,
+                    trackEntity.modified
                 )
             }
 
@@ -264,6 +280,7 @@ object PlaylistService {
     suspend fun loveTrack(db: AppDatabase, track: TrackContainer): Boolean {
         return withContext(Dispatchers.IO) {
             val playlistDao = db.playlistDao()
+            val currentDate = Date()
 
             val imageId = track.id.toIntOrNull()?.let { track.id } ?: track.id.hashCode().toString()
             val imageUrl = track.imageByteArray?.let {
@@ -281,7 +298,11 @@ object PlaylistService {
                 track.imageByteArray,
                 imageUrl,
                 track.artist,
-                track.loved
+                track.loved,
+                track.genre,
+                track.duration,
+                track.created,
+                currentDate
             )
 
             playlistDao.love(trackEntity, track.loved)
@@ -314,7 +335,11 @@ object PlaylistService {
                     track.imageByteArray,
                     imageUrl,
                     track.artist,
-                    track.loved
+                    track.loved,
+                    track.genre,
+                    track.duration,
+                    track.created,
+                    track.modified
                 )
             }
 
