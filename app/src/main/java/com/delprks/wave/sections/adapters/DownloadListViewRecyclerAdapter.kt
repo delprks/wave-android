@@ -22,6 +22,7 @@ import com.delprks.wave.services.PlaylistService
 import com.delprks.wave.util.ImageCache
 import com.delprks.wave.util.PlaylistBuilder
 import com.delprks.wave.util.ReservedPlaylists
+import com.delprks.wave.util.TextFormatter
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.*
@@ -106,7 +107,9 @@ class DownloadListViewRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
-        holder.downloadTrackName.text = track.name
+        val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
+
+        holder.downloadTrackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
         holder.downloadTrackArtist.text = track.artist
 
         if (track.image != null) {

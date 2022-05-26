@@ -22,6 +22,7 @@ import java.lang.IllegalArgumentException
 import com.delprks.wave.util.SwipeDetector
 
 import com.delprks.wave.util.SwipeDetector.SwipeTypeEnum
+import com.delprks.wave.util.TextFormatter
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
@@ -85,12 +86,14 @@ class PlayerListViewRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
+        val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
 
-        holder.trackName.text = track.name
+        holder.trackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
         holder.trackArtist.text = track.artist
 
         if (track.location == ContainerLocation.REMOTE) {
-            holder.itemView.findViewById<RelativeLayout>(R.id.player_list_item).background = ResourcesCompat.getDrawable(parentActivity!!.resources, R.drawable.list_item_background_remote, null)
+            holder.itemView.findViewById<RelativeLayout>(R.id.player_list_item).background = ResourcesCompat.getDrawable(
+                parentActivity.resources, R.drawable.list_item_background_remote, null)
         }
 
 //        if (track.imageBitmapUri != null) {

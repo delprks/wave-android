@@ -19,4 +19,6 @@
     <string name="playlist_details_modify_playlist_name">Title:</string>
     <string name="playlist_details_modify_save_btn_txt">SAVE</string>
     <string name="playlist_item_count_txt">%1$s tracks (%2$s)</string>
+    <integer name="list_header_text_size_limit">35</integer>
+    <integer name="list_item_text_size_limit">58</integer>
 </resources>
