@@ -26,15 +26,12 @@ import com.delprks.wave.*
 import com.delprks.wave.dao.AppDatabase
 import com.delprks.wave.services.PlaylistService
 import com.delprks.wave.services.WebDavDownloader
-import com.delprks.wave.util.MetadataRetriever
 import kotlinx.coroutines.*
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import com.delprks.wave.domain.*
-import com.delprks.wave.util.ImageCache
-import com.delprks.wave.util.PlaylistBuilder
-import com.delprks.wave.util.ReservedPlaylists
+import com.delprks.wave.util.*
 import wave.R
 import wave.databinding.LibraryListItemBinding
 import java.io.File
@@ -104,14 +101,19 @@ class LibraryListViewRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = remoteContainers[position]
-        holder.container.text = item.name
 
         // set the parent dir color
         if (item.id == "prev_dir") {
+            val headerTextSizeLimit = parentActivity.resources.getInteger(R.integer.list_header_text_size_limit)
+            holder.container.text = TextFormatter.shorten(item.name, headerTextSizeLimit)
+
             holder.itemView.findViewById<TextView>(R.id.content)
                 .setTextSize(TypedValue.COMPLEX_UNIT_PX, headerTextSize)
             holder.itemView.findViewById<TextView>(R.id.content).setTextColor(headerTextColor)
         } else {
+            val itemTextSizeLimit = parentActivity.resources.getInteger(R.integer.list_item_text_size_limit)
+            holder.container.text = TextFormatter.shorten(item.name, itemTextSizeLimit)
+
             holder.itemView.findViewById<TextView>(R.id.content)
                 .setTextSize(TypedValue.COMPLEX_UNIT_PX, listItemTextSize)
             holder.itemView.findViewById<TextView>(R.id.content).setTextColor(listItemTextColor)
