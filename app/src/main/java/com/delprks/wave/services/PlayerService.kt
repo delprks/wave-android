@@ -149,7 +149,7 @@ class PlayerService : Service() {
             mediaSessionConnector!!.setQueueNavigator(object : TimelineQueueNavigator(mediaSessionCompat) {
                 override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
                     val currentTrack = tracks[windowIndex]
-                    tracksMap[currentTrack.path] = currentTrack
+                    tracksMap[currentTrack.id] = currentTrack
                     val artist = currentTrack.artist ?: "Unknown artist"
 
                     mediaSessionCompat.setMetadata(createMediaMetadataCompat(currentTrack.name, artist, currentTrack.imageBitmapUri))
