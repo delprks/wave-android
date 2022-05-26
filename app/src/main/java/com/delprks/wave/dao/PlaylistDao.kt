@@ -101,8 +101,7 @@ interface PlaylistDao {
         val tracksForPlaylist = getTrackPlaylistRelationByPlaylistId(playlistId)
 
         playlistWithoutTracks.size = tracksForPlaylist.size
-        val duration = tracks.sumOf { it.duration ?: run { 0L } }
-        playlistWithoutTracks.duration = duration
+        playlistWithoutTracks.duration += tracks.sumOf { it.duration ?: run { 0L } }
         playlistWithoutTracks.modified = Date()
 
         updatePlaylist(playlistWithoutTracks)
@@ -112,19 +111,21 @@ interface PlaylistDao {
 
     @Transaction
     fun deleteTracks(trackIds: List<String>) {
-        removeTracks(trackIds)
-
         val trackPlaylistRelation = getTrackPlaylistRelationByTrackIds(trackIds)
+        val tracks = getTracksById(trackIds)
         val affectedPlaylists = getPlaylistsWithoutTracks(trackPlaylistRelation.map { it.playlistId })
 
         val currentDate = Date()
-        val removedTracksSize = trackIds.size
+        val removedTracksSize = tracks.size
+        val removedTracksDuration = tracks.sumOf { it.duration ?: run { 0L } }
 
         affectedPlaylists.forEach { playlistEntity ->
             playlistEntity.size -= removedTracksSize
             playlistEntity.modified = currentDate
-//            playlistEntity.duration -= ??
+            playlistEntity.duration -= removedTracksDuration
         }
+
+        removeTracks(trackIds)
 
         updatePlaylists(affectedPlaylists)
 
@@ -159,11 +160,12 @@ interface PlaylistDao {
     fun removeTracksFromPlaylist(trackIds: List<String>, playlistId: String) {
         val playlistEntity = getPlaylistWithoutTracks(playlistId)
 
-        val removedTracksSize = trackIds.size
+        val tracks = getTracksById(trackIds)
+        val removedTracksSize = tracks.size
 
         playlistEntity.size -= removedTracksSize
         playlistEntity.modified = Date()
-//            playlistEntity.duration -= ??
+        playlistEntity.duration -= tracks.sumOf { it.duration ?: run { 0L } }
 
         removeTrackPlaylistRelationByTrackIdAndPlaylistId(trackIds, playlistId)
         updatePlaylist(playlistEntity)
