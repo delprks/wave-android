@@ -114,13 +114,16 @@ interface PlaylistDao {
         //TODO::need to figure out how many tracks exist in each playlist, rather than deleting same number from all playlists
         val trackPlaylistRelation = getTrackPlaylistRelationByTrackIds(trackIds)
         val tracks = getTracksById(trackIds)
-        val affectedPlaylists = getPlaylistsWithoutTracks(trackPlaylistRelation.map { it.playlistId })
+        val affectedPlaylists = getPlaylistsWithoutTracks(trackPlaylistRelation.map { it.playlistId }).distinct()
+        val affectedPlaylistsMap: Map<String, List<PlaylistTrackEntity>> = trackPlaylistRelation.groupBy { it.playlistId }.mapValues { it.value.distinct() }
 
         val currentDate = Date()
-        val removedTracksSize = tracks.size
-        val removedTracksDuration = tracks.sumOf { it.duration ?: run { 0L } }
 
         affectedPlaylists.forEach { playlistEntity ->
+            val tracksRemovedFromThisPlaylist: List<PlaylistTrackEntity> = affectedPlaylistsMap[playlistEntity.playlistId]!!
+
+            val removedTracksSize = tracksRemovedFromThisPlaylist.size
+            val removedTracksDuration = tracks.filter { tracksRemovedFromThisPlaylist.map { entity -> entity.trackId }.contains(it.trackId) }.sumOf { it.duration ?: run { 0L } }
             playlistEntity.size -= removedTracksSize
             playlistEntity.modified = currentDate
             playlistEntity.duration -= removedTracksDuration
