@@ -45,7 +45,7 @@ object PlaylistService {
 
             val trackStatusEntity = LatestTrackEntity(
                 latestTrack.id,
-                latestTrack.trackPosition,
+                latestTrack.trackId,
                 latestTrack.trackProgress,
                 latestTrack.shuffled,
                 latestTrack.playlistId
@@ -64,7 +64,7 @@ object PlaylistService {
             trackStatus?.let {
                 LatestTrack(
                     trackStatus.id,
-                    trackStatus.trackPosition,
+                    trackStatus.trackId,
                     trackStatus.trackProgress,
                     trackStatus.shuffled,
                     trackStatus.playlistId
