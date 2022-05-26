@@ -113,7 +113,8 @@ class PlayerService : Service() {
                 tracks.forEach { track ->
                     run {
                         val mediaItem = MediaItem.Builder()
-                            .setMediaId(track.path)
+                            .setMediaId(track.id)
+                            .setUri(track.path)
                             .setMediaMetadata(
                                 MediaMetadata.Builder()
                                     .setTitle(track.name)
@@ -121,7 +122,6 @@ class PlayerService : Service() {
                                     .setArtworkData(track.imageByteArray, PICTURE_TYPE_FRONT_COVER)
                                     .build()
                             )
-                            .setUri(track.path)
                             .build()
 
                         exoPlayer.addMediaItem(
@@ -155,7 +155,8 @@ class PlayerService : Service() {
                     mediaSessionCompat.setMetadata(createMediaMetadataCompat(currentTrack.name, artist, currentTrack.imageBitmapUri))
 
                     return MediaDescriptionCompat.Builder()
-                        .setMediaId(currentTrack.path)
+                        .setMediaId(currentTrack.id)
+                        .setMediaUri(Uri.parse(currentTrack.path))
                         .setTitle(currentTrack.name)
                         .setSubtitle(artist)
                         .setIconUri(currentTrack.imageBitmapUri)
@@ -177,7 +178,7 @@ class PlayerService : Service() {
 
                     CoroutineScope(Dispatchers.Main).launch {
                         val trackStatus = LatestTrack(
-                            trackPosition = player.currentMediaItemIndex,
+                            trackId = mediaItem!!.mediaId,
                             trackProgress = 0,
                             shuffled = player.shuffleModeEnabled,
                             playlistId = playlistId
@@ -213,7 +214,7 @@ class PlayerService : Service() {
         if (!initial) {
             CoroutineScope(Dispatchers.Main).launch {
                 val trackStatus = LatestTrack(
-                    trackPosition = position,
+                    trackId = track.id,
                     trackProgress = 0,
                     shuffled = shuffled,
                     playlistId = playlistId

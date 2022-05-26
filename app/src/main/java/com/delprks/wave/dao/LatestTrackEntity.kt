@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class LatestTrackEntity(
     @PrimaryKey var id: String = "latest",
-    var trackPosition: Int,
+    var trackId: String,
     var trackProgress: Long,
     var shuffled: Boolean,
     var playlistId: String?

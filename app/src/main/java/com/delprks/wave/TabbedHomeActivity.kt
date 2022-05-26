@@ -32,6 +32,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.app.ActivityManager
+import com.delprks.wave.domain.LatestTrack
 import com.delprks.wave.services.PlaylistService
 import wave.R
 import wave.databinding.ActivityTabbedHomeBinding
@@ -120,7 +121,7 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         // load latest played track/playlist
         CoroutineScope(Dispatchers.Main).launch {
-            val latestTrack = PlaylistService.getLatestTrack(App.getDB())
+            val latestTrack: LatestTrack? = PlaylistService.getLatestTrack(App.getDB())
 
             latestTrack?.let { trackStatus ->
                 Log.d("home", "loaded track is $trackStatus")
@@ -128,9 +129,18 @@ class TabbedHomeActivity : AppCompatActivity() {
                 trackStatus.playlistId?.let { playlistId ->
                     if (PlaylistService.playlistExists(App.getDB(), playlistId)) {
                         val playlistWithTracks = PlaylistService.getPlaylistPopulatedWithTracks(App.getDB(), playlistId)
+                        val latestTrackPlayedId = trackStatus.trackId
+                        val tracks = playlistWithTracks.tracks.filter { it.id == latestTrackPlayedId }
 
-                        playerService?.loadSongs(activity, playlistWithTracks.tracks, playlistId, null, false)
-                        playerService?.play(trackStatus.trackPosition, shuffled = trackStatus.shuffled, paused = true, initial = true)
+                        if (tracks.isNotEmpty()) {
+                            val track = tracks[0]
+                            val position = playlistWithTracks.tracks.indexOf(track)
+
+                            playerService?.loadSongs(activity, playlistWithTracks.tracks, playlistId, null, false)
+                            playerService?.play(position, shuffled = trackStatus.shuffled, paused = true, initial = true)
+                        } else {
+                            player.panelHeight = 0
+                        }
                     } else {
                         player.panelHeight = 0
                     }
