@@ -111,6 +111,7 @@ interface PlaylistDao {
 
     @Transaction
     fun deleteTracks(trackIds: List<String>) {
+        //TODO::need to figure out how many tracks exist in each playlist, rather than deleting same number from all playlists
         val trackPlaylistRelation = getTrackPlaylistRelationByTrackIds(trackIds)
         val tracks = getTracksById(trackIds)
         val affectedPlaylists = getPlaylistsWithoutTracks(trackPlaylistRelation.map { it.playlistId })
