@@ -53,7 +53,7 @@
 
         <service android:name="com.delprks.wave.services.PlayerService" android:exported="false" />
         <meta-data android:name="com.google.android.gms.car.application" android:resource="@xml/automotive_app_desc" />
-        <meta-data android:name="com.google.android.gms.car.notification.SmallIcon" android:resource="@drawable/ic_notification" />
+        <meta-data android:name="com.google.android.gms.car.notification.SmallIcon" android:resource="@mipmap/wave_icon" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
