@@ -1,41 +1,43 @@
 package com.delprks.wave
 
-import android.os.Build
-import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.delprks.wave.sections.adapters.SectionsPagerAdapter
-import androidx.appcompat.widget.Toolbar
-import android.widget.RelativeLayout
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.viewpager2.widget.ViewPager2
-import com.delprks.wave.sections.SettingsFragment
-import com.google.android.material.tabs.TabLayoutMediator
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener
-import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.Path
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.*
+import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.viewpager2.widget.ViewPager2
+import com.delprks.wave.domain.LatestTrack
+import com.delprks.wave.sections.PlaylistFragment
+import com.delprks.wave.sections.SettingsFragment
+import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
+import com.delprks.wave.services.PlaylistService
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import android.app.ActivityManager
-import com.delprks.wave.domain.LatestTrack
-import com.delprks.wave.services.PlaylistService
 import wave.R
 import wave.databinding.ActivityTabbedHomeBinding
+import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.Path
 
 class TabbedHomeActivity : AppCompatActivity() {
 
@@ -95,6 +97,13 @@ class TabbedHomeActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.sections_container, App.getPlaylistFragment(), "dashboard")
+//                .commit()
+//        }
+
         binding = ActivityTabbedHomeBinding.inflate(layoutInflater)
 
         window.navigationBarColor = resources.getColor(R.color.black)

@@ -53,7 +53,7 @@ class PlaylistFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.playlists_list, container)
+        val view = inflater.inflate(R.layout.playlists_list, container, false)
         val recyclerLayout = view.findViewById<RecyclerView>(R.id.playlists_list)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshPlaylistsLayout)
         val addPlaylistButton = view.findViewById<Button>(R.id.add_playlist_btn)

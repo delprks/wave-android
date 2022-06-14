@@ -37,16 +37,16 @@
 
         <!-- to show icons next to text in tabs: app:tabInlineLabel="true"-->
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/secondary"
-            app:tabIconTint="@color/tab_state_colors"
-            app:tabIndicatorHeight="0dp"
-            app:tabTextColor="@color/light_white"
-            tools:ignore="SpeakableTextPresentCheck" />
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@color/secondary"
+                app:tabIconTint="@color/tab_state_colors"
+                app:tabIndicatorHeight="0dp"
+                app:tabTextColor="@color/light_white"
+                tools:ignore="SpeakableTextPresentCheck" />
     </RelativeLayout>
 
     <RelativeLayout
