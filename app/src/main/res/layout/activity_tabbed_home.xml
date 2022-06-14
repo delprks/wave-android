@@ -28,12 +28,12 @@
             app:title="Wave" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/sections_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/tabs"
-            android:layout_below="@id/toolbar"
-            android:background="@color/activity_bg" />
+                android:id="@+id/sections_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/tabs"
+                android:layout_below="@id/toolbar"
+                android:background="@color/activity_bg" />
 
         <!-- to show icons next to text in tabs: app:tabInlineLabel="true"-->
         <com.google.android.material.tabs.TabLayout

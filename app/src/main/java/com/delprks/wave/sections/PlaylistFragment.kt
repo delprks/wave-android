@@ -44,7 +44,7 @@ class PlaylistFragment : Fragment() {
     private val maxProgress = 100
 
     fun playerService(): PlayerService? {
-        return (activity as TabbedHomeActivity).playerService
+        return (requireActivity() as TabbedHomeActivity).playerService
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
