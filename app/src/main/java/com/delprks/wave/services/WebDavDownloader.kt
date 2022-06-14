@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.security.SecureRandom
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -61,6 +62,11 @@ class WebDavDownloader {
                         chain: Array<out X509Certificate>?,
                         authType: String?
                     ) {
+                        try {
+                            chain!![0].checkValidity()
+                        } catch (e: Exception) {
+                            throw CertificateException("Certificate not valid or trusted.")
+                        }
                     }
 
                     override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
@@ -77,7 +83,6 @@ class WebDavDownloader {
                         sslSocketFactory,
                         trustAllCerts.first() as X509TrustManager
                     )
-                    okHttpClient.hostnameVerifier { _, _ -> true }
                 }
 
                 return okHttpClient

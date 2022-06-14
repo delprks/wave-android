@@ -7,6 +7,7 @@ import com.thegrizzlylabs.sardineandroid.Sardine
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -45,9 +46,16 @@ class WebDavResourceRetriever {
                         chain: Array<out X509Certificate>?,
                         authType: String?
                     ) {
+                        try {
+                            chain!![0].checkValidity()
+                        } catch (e: Exception) {
+                            throw CertificateException("Certificate not valid or trusted.")
+                        }
                     }
 
-                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                    override fun getAcceptedIssuers(): Array<X509Certificate> {
+                        return arrayOf()
+                    }
                 })
 
                 // Install the all-trusting trust manager
@@ -61,7 +69,6 @@ class WebDavResourceRetriever {
                         sslSocketFactory,
                         trustAllCerts.first() as X509TrustManager
                     )
-                    okHttpClient.hostnameVerifier { _, _ -> true }
                 }
 
                 return okHttpClient

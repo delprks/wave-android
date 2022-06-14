@@ -22,8 +22,9 @@
 
             <ImageView
                 android:id="@+id/playlist_activity_close_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:contentDescription="@string/playlist_close_button_content_description"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/down_arrow"
                 android:layout_gravity="top"
                 />
@@ -101,6 +102,7 @@
             <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
                 android:layout_marginTop="30dp"
                 android:id="@+id/player_activity_track_list"
+                android:contentDescription="@string/player_content_description"
                 android:name="wave.ui.main.LibraryFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

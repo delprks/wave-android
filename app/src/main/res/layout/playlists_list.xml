@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/greeting_text"
             android:layout_marginTop="68sp"
-            android:backgroundTint="#ab0000"
+            android:backgroundTint="#C50808"
             android:text="Add a Playlist"
             android:textColor="#ECF0F1"
             android:textSize="16sp" />
@@ -30,15 +30,15 @@
             android:textSize="25sp" />
 
         <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/playlists_list"
-            android:name="wave.ui.main.PlaylistsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="140sp"
-            android:transcriptMode="normal"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".sections.PlaylistFragment"
-            tools:listitem="@layout/playlists_list_item" />
+                android:id="@+id/playlists_list"
+                android:name="wave.ui.main.PlaylistsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="140sp"
+                android:transcriptMode="normal"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".sections.PlaylistFragment"
+                tools:listitem="@layout/playlists_list_item" />
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

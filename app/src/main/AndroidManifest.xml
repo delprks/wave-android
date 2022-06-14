@@ -17,7 +17,7 @@
             android:exported="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:label="@string/app_name"
             android:theme="@style/Theme.Wave.NoActionBar">
             <intent-filter>
