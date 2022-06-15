@@ -26,6 +26,7 @@ import com.delprks.wave.sections.SettingsFragment
 import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
 import com.delprks.wave.services.PlaylistService
+import com.google.android.material.internal.ViewUtils.dpToPx
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -195,11 +196,19 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         val tabs: TabLayout = binding.tabs
 
+//        val contentHeight = 600 //activity.window.findViewById<View>(Window.ID_ANDROID_CONTENT).run { bottom - top }
+//        // 112dp is a deduction, 56dp for Toolbar and 56dp for BottomNavigationTab
+//        val tabLayoutWidth =  contentHeight - dpToPx(activity,112).toInt()
+//        tabs.layoutParams.width = 2400
+//        tabs.layoutParams.height = 400
+        // 44dp is basically half of assigned height[![enter image description here][2]][2]
+        tabs.translationX = (0).toFloat()// (tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat() * -1
+        tabs.translationY = 0.toFloat() //(tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat()
+
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.icon = ResourcesCompat.getDrawable(this.resources, this.tabs[position].second, null)
             tab.customView = View.inflate(applicationContext, R.layout.custom_view_tab, null)
-            tab.customView?.findViewById<TextView>(R.id.view_home_tab_text)?.text =
-                this.resources.getString(this.tabs[position].first)
+            tab.customView?.findViewById<TextView>(R.id.view_home_tab_text)?.text = this.resources.getString(this.tabs[position].first)
             tab.customView?.isSelected = tab.customView!!.isSelected
         }.attach()
     }

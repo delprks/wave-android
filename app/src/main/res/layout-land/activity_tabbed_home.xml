@@ -22,10 +22,11 @@
 
             <!-- to show icons next to text in tabs: app:tabInlineLabel="true"-->
             <com.google.android.material.tabs.TabLayout
+                    android:orientation="vertical"
                     android:id="@+id/tabs"
-                    android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.12"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    app:layout_constraintWidth_percent="0.12"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="start"
                     android:backgroundTint="@color/secondary"
@@ -35,7 +36,8 @@
                     tools:ignore="SpeakableTextPresentCheck"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tabGravity="fill"
+                    app:tabMode="scrollable"
+                    android:rotation="90"
                     />
 
 
@@ -50,8 +52,8 @@
                     app:titleTextAppearance="@style/Toolbar.TitleText"
                     android:layout_alignParentTop="true"
                     app:title="Wave"
-                    app:layout_constraintStart_toEndOf="@+id/tabs"
-                    app:layout_constraintTop_toTopOf="@+id/sections_container" />
+                    app:layout_constraintTop_toTopOf="@+id/sections_container"
+                    app:layout_constraintStart_toStartOf="@+id/sections_container" />
 
         <androidx.viewpager2.widget.ViewPager2
                 android:layout_width="0dp"
