@@ -202,8 +202,8 @@ class TabbedHomeActivity : AppCompatActivity() {
 //        tabs.layoutParams.width = 2400
 //        tabs.layoutParams.height = 400
         // 44dp is basically half of assigned height[![enter image description here][2]][2]
-        tabs.translationX = (0).toFloat()// (tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat() * -1
-        tabs.translationY = 0.toFloat() //(tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat()
+//        tabs.translationX = (-90).toFloat()// (tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat() * -1
+//        tabs.translationY = 0.toFloat() //(tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat()
 
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.icon = ResourcesCompat.getDrawable(this.resources, this.tabs[position].second, null)
