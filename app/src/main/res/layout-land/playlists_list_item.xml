@@ -43,8 +43,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/playlist_image"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/playlist_reorder"
-                />
+                app:layout_constraintRight_toLeftOf="@+id/playlist_reorder" />
 
         <TextView
                 android:id="@+id/playlist_item_count"
@@ -57,8 +56,7 @@
                 android:textColor="@color/light_white"
                 android:textSize="14dp"
                 app:layout_constraintStart_toEndOf="@+id/playlist_image"
-                app:layout_constraintTop_toBottomOf="@+id/playlist_name"
-                 />
+                app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
 
         <ImageView
                 android:src="@drawable/reorder"
@@ -66,11 +64,8 @@
                 android:layout_width="40dp"
                 android:layout_height="70sp"
                 android:gravity="center_horizontal"
-
                 app:layout_constraintStart_toEndOf="@+id/playlist_name"
-
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/playlist_info" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
                 android:id="@+id/playlist_options"
@@ -82,8 +77,7 @@
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/playlist_reorder"
-
-                app:layout_constraintTop_toTopOf="@+id/parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
