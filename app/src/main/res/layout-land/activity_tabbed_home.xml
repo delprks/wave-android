@@ -25,7 +25,8 @@
             <com.google.android.material.tabs.TabLayout
                     android:orientation="vertical"
                     android:id="@+id/tabs"
-                    android:layout_width="230dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="1"
                     android:layout_height="0dp"
                     app:layout_constraintHeight_percent="1"
                     android:backgroundTint="@color/secondary"
@@ -36,15 +37,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:rotation="90"
-                    android:translationX="-82dp"
+                    android:translationX="-380dp"
                     android:translationY="13dp"
                     />
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:translationX="-162dp"
+                    android:translationX="-760dp"
                     android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.92"
+                    app:layout_constraintWidth_percent="0.93"
                     android:layout_height="wrap_content"
                     android:background="@drawable/main_header_selector"
                     android:minHeight="?attr/actionBarSize"
@@ -57,10 +58,10 @@
 
 
         <androidx.viewpager2.widget.ViewPager2
-                android:translationX="-162dp"
+                android:translationX="-760dp"
                 android:layout_width="0dp"
                 android:layout_marginTop="?attr/actionBarSize"
-                app:layout_constraintWidth_percent="0.92"
+                app:layout_constraintWidth_percent="0.93"
                 android:id="@+id/sections_container"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
