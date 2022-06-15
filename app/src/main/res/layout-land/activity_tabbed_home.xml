@@ -37,6 +37,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:rotation="90"
                     android:translationX="-82dp"
+                    android:translationY="13dp"
                     />
 
             <androidx.appcompat.widget.Toolbar
