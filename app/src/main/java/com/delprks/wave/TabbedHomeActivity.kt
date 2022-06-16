@@ -6,6 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -13,7 +14,6 @@ import android.util.Log
 import android.view.*
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -21,12 +21,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.delprks.wave.domain.LatestTrack
-import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.sections.SettingsFragment
 import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
 import com.delprks.wave.services.PlaylistService
-import com.google.android.material.internal.ViewUtils.dpToPx
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -128,6 +126,12 @@ class TabbedHomeActivity : AppCompatActivity() {
         }
 
         val player = findViewById<SlidingUpPanelLayout>(R.id.slidingUpPlayer)
+
+        val orientation = resources.configuration.orientation
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            player.panelHeight = 0
+        }
 
         // load latest played track/playlist
         CoroutineScope(Dispatchers.Main).launch {

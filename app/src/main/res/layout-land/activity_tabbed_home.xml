@@ -27,7 +27,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:tabGravity="fill"
-                    app:layout_constraintHeight_percent="1"
+                    app:layout_constraintHeight_percent="0.15"
                     app:layout_constraintWidth_percent="0.2"
                     android:backgroundTint="@color/secondary"
                     app:tabIconTint="@color/tab_state_colors"
@@ -38,6 +38,88 @@
                     app:layout_constraintEnd_toStartOf="@+id/sections_container"
                     app:layout_constraintTop_toTopOf="parent"
                      />
+
+            <RelativeLayout
+                    android:id="@+id/mini_player"
+                    android:background="@color/secondary"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.85"
+                    app:layout_constraintWidth_percent="0.2"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabs"
+                    android:focusable="true">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mini_player_track_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:id="@+id/mini_player_track_image"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintDimensionRatio="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:background="@color/black"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/cover" />
+
+                    <TextView
+                            android:id="@+id/mini_player_track_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/mini_player_track_image"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:text="Title"
+                            android:textColor="#ECF0F1"
+                            android:textSize="@dimen/mini_player_track_title_text_size"
+                            android:textStyle="bold" />
+
+                    <TextView
+                            android:id="@+id/mini_player_track_artist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/mini_player_track_title"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:text="Artiasdasdasdasdst"
+                            android:textColor="#ECF0F1"
+                            android:textSize="@dimen/mini_player_track_artist_text_size" />
+
+                    <com.google.android.exoplayer2.ui.PlayerView
+                            android:id="@+id/mini_media_player"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom"
+                            android:isScrollContainer="false"
+                            app:layout_constraintTop_toBottomOf="@id/mini_player_track_artist"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:auto_show="true"
+                            app:controller_layout_id="@layout/custom_mini_playback_controller"
+                            app:hide_on_touch="false"
+                            app:resize_mode="fixed_height"
+                            app:show_buffering="always"
+                            app:show_timeout="0"
+                            app:surface_type="texture_view" />
+
+                    <!--                <ImageView-->
+                    <!--                    android:id="@+id/player_love_button"-->
+                    <!--                    android:layout_width="35sp"-->
+                    <!--                    android:layout_height="35sp"-->
+                    <!--                    android:layout_marginStart="2dp"-->
+                    <!--                    android:layout_gravity="end"-->
+                    <!--                    android:src="@drawable/unloved_track"-->
+
+                    <!--                    />-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
 
 
             <androidx.appcompat.widget.Toolbar
@@ -63,203 +145,120 @@
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:layout_constraintStart_toEndOf="@+id/tabs"
                 android:background="@color/activity_bg" />
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </RelativeLayout>
 
     <RelativeLayout
+
             android:id="@+id/player"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-        <RelativeLayout
-                android:id="@+id/scrollable_player"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<!--        <RelativeLayout-->
+<!--                android:id="@+id/scrollable_player"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-            <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/main_media_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="center"
-                    android:isScrollContainer="false"
-                    app:auto_show="true"
-                    app:controller_layout_id="@layout/custom_playback_controller"
-                    app:hide_on_touch="false"
-                    app:resize_mode="zoom"
-                    app:show_buffering="always"
-                    app:show_shuffle_button="true"
-                    app:show_timeout="0"
-                    app:surface_type="texture_view" />
+<!--            <com.google.android.exoplayer2.ui.PlayerView-->
+<!--                    android:id="@+id/main_media_player"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="fill_parent"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:isScrollContainer="false"-->
+<!--                    app:auto_show="true"-->
+<!--                    app:controller_layout_id="@layout/custom_playback_controller"-->
+<!--                    app:hide_on_touch="false"-->
+<!--                    app:resize_mode="zoom"-->
+<!--                    app:show_buffering="always"-->
+<!--                    app:show_shuffle_button="true"-->
+<!--                    app:show_timeout="0"-->
+<!--                    app:surface_type="texture_view" />-->
 
-            <!--                <androidx.recyclerview.widget.RecyclerView-->
-            <!--                    android:visibility="gone"-->
-            <!--                    android:id="@+id/player_songs_list"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-            <!--                    app:layoutManager="LinearLayoutManager"-->
-            <!--                    tools:listitem="@layout/player_list_item"-->
-            <!--                    android:layout_below="@id/main_media_player"-->
-            <!--                    />-->
+<!--            &lt;!&ndash;                <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:visibility="gone"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:id="@+id/player_songs_list"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    app:layout_behavior="@string/appbar_scrolling_view_behavior"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    app:layoutManager="LinearLayoutManager"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    tools:listitem="@layout/player_list_item"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_below="@id/main_media_player"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    />&ndash;&gt;-->
 
-            <TextView
-                    android:id="@+id/player_track_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:paddingStart="12sp"
-                    android:paddingEnd="12sp"
-                    android:layout_marginTop="120dp"
-                    android:background="@color/black"
-                    android:backgroundTint="@color/primary"
-                    android:backgroundTintMode="multiply"
-                    android:alpha="0.8"
-                    android:textStyle="bold"
-                    android:text="@string/player_track_title_txt"
-                    android:textAllCaps="true"
-                    android:textColor="@color/light_white"
-                    android:textSize="44sp"
-                    />
-            <TextView
-                    android:id="@+id/player_track_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:paddingStart="12sp"
-                    android:paddingEnd="12sp"
-                    android:background="@color/primary"
-                    android:backgroundTint="@color/primary"
-                    android:backgroundTintMode="multiply"
-                    android:alpha="0.8"
-                    android:textStyle="italic|bold"
-                    android:text="@string/player_track_by_txt"
-                    android:textAllCaps="true"
-                    android:textColor="@color/light_white"
-                    android:textSize="32sp"
-                    android:layout_below="@+id/player_track_title"
-                    />
-            <TextView
-                    android:id="@+id/player_track_artist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:paddingStart="12sp"
-                    android:paddingEnd="12sp"
-                    android:background="@color/black"
-                    android:backgroundTint="@color/primary"
-                    android:backgroundTintMode="multiply"
-                    android:alpha="0.8"
-                    android:textStyle="bold"
-                    android:text="@string/player_track_artist_txt"
-                    android:textAllCaps="true"
-                    android:textColor="@color/light_white"
-                    android:textSize="36sp"
-                    android:layout_below="@+id/player_track_by" />
+<!--            <TextView-->
+<!--                    android:id="@+id/player_track_title"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="top"-->
+<!--                    android:paddingStart="12sp"-->
+<!--                    android:paddingEnd="12sp"-->
+<!--                    android:layout_marginTop="120dp"-->
+<!--                    android:background="@color/black"-->
+<!--                    android:backgroundTint="@color/primary"-->
+<!--                    android:backgroundTintMode="multiply"-->
+<!--                    android:alpha="0.8"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="@string/player_track_title_txt"-->
+<!--                    android:textAllCaps="true"-->
+<!--                    android:textColor="@color/light_white"-->
+<!--                    android:textSize="44sp"-->
+<!--                    />-->
+<!--            <TextView-->
+<!--                    android:id="@+id/player_track_by"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="top"-->
+<!--                    android:paddingStart="12sp"-->
+<!--                    android:paddingEnd="12sp"-->
+<!--                    android:background="@color/primary"-->
+<!--                    android:backgroundTint="@color/primary"-->
+<!--                    android:backgroundTintMode="multiply"-->
+<!--                    android:alpha="0.8"-->
+<!--                    android:textStyle="italic|bold"-->
+<!--                    android:text="@string/player_track_by_txt"-->
+<!--                    android:textAllCaps="true"-->
+<!--                    android:textColor="@color/light_white"-->
+<!--                    android:textSize="32sp"-->
+<!--                    android:layout_below="@+id/player_track_title"-->
+<!--                    />-->
+<!--            <TextView-->
+<!--                    android:id="@+id/player_track_artist"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="top"-->
+<!--                    android:paddingStart="12sp"-->
+<!--                    android:paddingEnd="12sp"-->
+<!--                    android:background="@color/black"-->
+<!--                    android:backgroundTint="@color/primary"-->
+<!--                    android:backgroundTintMode="multiply"-->
+<!--                    android:alpha="0.8"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="@string/player_track_artist_txt"-->
+<!--                    android:textAllCaps="true"-->
+<!--                    android:textColor="@color/light_white"-->
+<!--                    android:textSize="36sp"-->
+<!--                    android:layout_below="@+id/player_track_by" />-->
 
-            <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="140dp"
-                    android:gravity="bottom|end">
-                <ImageView
-                        android:id="@+id/main_player_love"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:foregroundGravity="bottom"
-                        android:src="@drawable/unloved_track"
-                        />
-            </RelativeLayout>
+<!--&lt;!&ndash;            <RelativeLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="fill_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_alignParentBottom="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginBottom="140dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="bottom|end">&ndash;&gt;-->
 
-        </RelativeLayout>
-        <RelativeLayout
-                android:id="@+id/mini_player"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mini_player_height"
-                android:layout_marginBottom="2sp"
-                android:background="@color/mini_player_bg_color"
-                android:gravity="top"
-                android:clickable="true"
-                android:orientation="horizontal"
-                android:focusable="true">
+<!--&lt;!&ndash;                <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/main_player_love"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="60dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="60dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:foregroundGravity="bottom"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:src="@drawable/unloved_track" />&ndash;&gt;-->
+<!--&lt;!&ndash;            </RelativeLayout>&ndash;&gt;-->
 
-            <RelativeLayout
-                    android:id="@+id/mini_player_track_info"
-                    android:layout_width="290sp"
-                    android:layout_height="wrap_content">
+<!--        </RelativeLayout>-->
 
-                <ImageView
-                        android:id="@+id/mini_player_track_image"
-                        android:layout_width="68dp"
-                        android:layout_height="@dimen/mini_player_height"
-                        android:background="@color/black"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/cover" />
-
-                <TextView
-                        android:id="@+id/mini_player_track_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_alignTop="@+id/mini_player_track_image"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="73dp"
-                        android:layout_marginTop="12dp"
-                        android:gravity="fill_vertical"
-                        android:text="Title"
-                        android:textColor="#ECF0F1"
-                        android:textSize="@dimen/mini_player_track_title_text_size"
-                        android:textStyle="bold" />
-
-                <TextView
-                        android:id="@+id/mini_player_track_artist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_below="@+id/mini_player_track_title"
-                        android:layout_alignStart="@+id/mini_player_track_title"
-                        android:layout_marginTop="3dp"
-                        android:gravity="fill_vertical"
-                        android:text="Artist"
-                        android:textColor="#ECF0F1"
-                        android:textSize="@dimen/mini_player_track_artist_text_size" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/mini_player_track_info">
-
-                <com.google.android.exoplayer2.ui.PlayerView
-                        android:id="@+id/mini_media_player"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom"
-                        android:isScrollContainer="false"
-                        app:auto_show="true"
-                        app:controller_layout_id="@layout/custom_mini_playback_controller"
-                        app:hide_on_touch="false"
-                        app:resize_mode="fixed_height"
-                        app:show_buffering="always"
-                        app:show_timeout="0"
-                        app:surface_type="texture_view" />
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/player_love_button"-->
-                <!--                    android:layout_width="35sp"-->
-                <!--                    android:layout_height="35sp"-->
-                <!--                    android:layout_marginStart="2dp"-->
-                <!--                    android:layout_gravity="end"-->
-                <!--                    android:src="@drawable/unloved_track"-->
-
-                <!--                    />-->
-            </RelativeLayout>
-        </RelativeLayout>
     </RelativeLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
