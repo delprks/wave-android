@@ -87,7 +87,7 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@id/mini_player_track_title"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:text="Artiasdasdasdasdst"
+                            android:text="Artist"
                             android:textColor="#ECF0F1"
                             android:textSize="@dimen/mini_player_track_artist_text_size" />
 
@@ -97,6 +97,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom"
                             android:isScrollContainer="false"
+                            app:default_artwork="@drawable/cover"
                             app:layout_constraintTop_toBottomOf="@id/mini_player_track_artist"
                             app:layout_constraintStart_toStartOf="parent"
                             app:auto_show="true"
