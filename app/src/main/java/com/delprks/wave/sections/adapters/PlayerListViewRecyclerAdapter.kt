@@ -1,6 +1,7 @@
 package com.delprks.wave.sections.adapters
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -156,24 +157,28 @@ class PlayerListViewRecyclerAdapter(
             notifyItemChanged(selectedPos)
         }
 
-        val mediaPlayer = parentActivity!!.findViewById<PlayerView>(R.id.main_media_player)
+        val orientation = parentActivity.resources.configuration.orientation
 
-        SwipeDetector(mediaPlayer).setOnSwipeListener { _, swipeType ->
-            if (swipeType == SwipeTypeEnum.LEFT_TO_RIGHT) {
-                selectedPosition = if (selectedPos == 0) 0 else selectedPos - 1
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val mediaPlayer = parentActivity.findViewById<PlayerView>(R.id.main_media_player)
 
-                playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
-                playlistFragment?.playerService()?.play(selectedPosition)
-            } else if (swipeType == SwipeTypeEnum.RIGHT_TO_LEFT) {
-                selectedPosition = if (selectedPos == tracks.size - 1) 0 else selectedPos + 1
+            SwipeDetector(mediaPlayer).setOnSwipeListener { _, swipeType ->
+                if (swipeType == SwipeTypeEnum.LEFT_TO_RIGHT) {
+                    selectedPosition = if (selectedPos == 0) 0 else selectedPos - 1
 
-                playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
-                playlistFragment?.playerService()?.play(selectedPosition)
+                    playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
+                    playlistFragment?.playerService()?.play(selectedPosition)
+                } else if (swipeType == SwipeTypeEnum.RIGHT_TO_LEFT) {
+                    selectedPosition = if (selectedPos == tracks.size - 1) 0 else selectedPos + 1
+
+                    playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
+                    playlistFragment?.playerService()?.play(selectedPosition)
+                }
+
+                notifyItemChanged(selectedPos)
+                selectedPos = selectedPosition
+                notifyItemChanged(selectedPos)
             }
-
-            notifyItemChanged(selectedPos)
-            selectedPos = selectedPosition
-            notifyItemChanged(selectedPos)
         }
 
         parentActivity.findViewById<Button>(R.id.player_activity_play_btn).setOnClickListener {
