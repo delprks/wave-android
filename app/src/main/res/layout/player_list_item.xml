@@ -63,15 +63,16 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/player_track_options"
-        android:layout_width="30sp"
-        android:layout_height="50sp"
-        android:paddingTop="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="5sp"
-        android:gravity="center"
-        android:text="&#8942;"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/white" />
+            android:id="@+id/player_track_options"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="@dimen/list_item_menu_size"
+
+            />
 
 </RelativeLayout>

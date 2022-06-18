@@ -74,12 +74,12 @@
     <TextView
         android:id="@+id/downloaded_file_options"
         android:layout_width="30sp"
-        android:layout_height="50sp"
-        android:paddingTop="20dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5sp"
         android:gravity="center"
         android:text="&#8942;"
+        android:textSize="30sp"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/white" />
 
