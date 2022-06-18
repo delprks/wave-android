@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Typeface
 import android.os.Build
 import android.text.SpannableString
+import android.text.format.DateUtils
 import android.text.style.StyleSpan
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -19,10 +20,7 @@ import com.delprks.wave.dao.AppDatabase
 import com.delprks.wave.domain.*
 import com.delprks.wave.sections.DownloadsFragment
 import com.delprks.wave.services.PlaylistService
-import com.delprks.wave.util.ImageCache
-import com.delprks.wave.util.PlaylistBuilder
-import com.delprks.wave.util.ReservedPlaylists
-import com.delprks.wave.util.TextFormatter
+import com.delprks.wave.util.*
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.*
@@ -110,10 +108,14 @@ class DownloadListViewRecyclerAdapter(
         val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
 
         holder.downloadTrackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
-        holder.downloadTrackArtist.text = track.artist
+        holder.downloadTrackArtist.text = track.artist ?: "Unknown artist"
 
-        if (track.image != null) {
-            holder.downloadedTrackImage.setImageBitmap(track.image)
+        val trackDuration = DateUtils.formatElapsedTime(track.duration!!)
+
+        holder.downloadedTrackLength.text = parentActivity.resources.getString(R.string.track_length_txt, trackDuration)
+
+        if (track.imageByteArray != null) {
+            holder.downloadedTrackImage.setImageBitmap(MetadataRetriever.byteToBitmap(track.imageByteArray))
         } else {
             holder.downloadedTrackImage.setImageResource(R.drawable.cover)
         }
@@ -263,6 +265,7 @@ class DownloadListViewRecyclerAdapter(
         val downloadTrackArtist: TextView = binding.downloadedArtistName
         val downloadedFileOptions: TextView = binding.downloadedFileOptions
         val downloadedTrackImage = binding.downloadedTrackImage
+        val downloadedTrackLength = binding.downloadedTrackLength
 //        val downloadedLove = binding.downloadedLove
 
         override fun toString(): String {

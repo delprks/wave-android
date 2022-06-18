@@ -3,6 +3,7 @@ package com.delprks.wave.sections.adapters
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
+import android.text.format.DateUtils
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.delprks.wave.domain.ContainerLocation
 import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.services.PlaylistService
+import com.delprks.wave.util.MetadataRetriever
 import com.delprks.wave.util.ReservedPlaylists
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,7 +92,18 @@ class PlayerListViewRecyclerAdapter(
         val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
 
         holder.trackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
-        holder.trackArtist.text = track.artist
+        holder.trackArtist.text = track.artist ?: "Unknown artist"
+
+        val trackDuration = DateUtils.formatElapsedTime(track.duration!!)
+
+        holder.trackLength.text = parentActivity.resources.getString(R.string.track_length_txt, trackDuration)
+
+        if (track.imageByteArray != null) {
+            holder.trackImage.setImageBitmap(MetadataRetriever.byteToBitmap(track.imageByteArray))
+        } else {
+            holder.trackImage.setImageResource(R.drawable.cover)
+        }
+
 
         if (track.location == ContainerLocation.REMOTE) {
             holder.itemView.findViewById<RelativeLayout>(R.id.player_list_item).background = ResourcesCompat.getDrawable(
@@ -294,6 +307,7 @@ class PlayerListViewRecyclerAdapter(
         val trackName: TextView = binding.playerSongName
         val trackImage: ImageView = binding.playerSongImage
         val trackArtist: TextView = binding.playerArtistName
+        val trackLength: TextView = binding.playerTrackLength
         val menuOptions: TextView = binding.playerTrackOptions
 
         override fun toString(): String {

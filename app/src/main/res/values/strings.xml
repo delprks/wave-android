@@ -20,7 +20,7 @@
     <string name="playlist_details_modify_save_btn_txt">SAVE</string>
     <string name="playlist_item_count_txt">%1$s tracks (%2$s)</string>
     <integer name="list_header_text_size_limit">35</integer>
-    <integer name="list_item_text_size_limit">58</integer>
+    <integer name="list_item_text_size_limit">30</integer>
     <string name="downloaded_list_content_description">Downloaded list</string>
     <string name="library_list_content_description">Library list</string>
     <string name="player_content_description">Track list</string>
@@ -33,4 +33,5 @@
     <string name="remote_media_path_input_box_hint">WebDav media path</string>
     <string name="home_tab_name">Home</string>
     <string name="playlist_image_content_description">Playlist image</string>
+    <string name="track_length_txt">%1$s</string>
 </resources>

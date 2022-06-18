@@ -8,11 +8,13 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="mini_player_track_title_text_size">15sp</dimen>
     <dimen name="mini_player_track_artist_text_size">12sp</dimen>
-    <dimen name="list_item_text_size">14sp</dimen>
-    <dimen name="list_sub_item_text_size">12sp</dimen>
+    <dimen name="list_item_text_size">18sp</dimen>
+    <dimen name="list_sub_item_text_size">14sp</dimen>
+    <dimen name="list_sub_sub_item_text_size">10sp</dimen>
     <dimen name="header_item_text_size">22sp</dimen>
-    <dimen name="playlist_activity_playlist_title_text_size">20sp</dimen>
-    <dimen name="playlist_activity_playlist_tracks_count_text_size">9sp</dimen>
+    <dimen name="playlist_activity_playlist_title_text_size">26sp</dimen>
+    <dimen name="playlist_activity_playlist_tracks_count_text_size">12sp</dimen>
     <dimen name="mini_player_height">68dp</dimen>
     <dimen name="mini_player_image_dimension">170dp</dimen>
+    <dimen name="list_item_height">80dp</dimen>
 </resources>

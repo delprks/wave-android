@@ -2,48 +2,63 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/downloaded_item"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="4sp"
+    android:layout_height="@dimen/list_item_height"
     android:layout_marginBottom="2sp"
     android:background="@drawable/list_item_background"
     android:clickable="true"
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:layout_width="340sp"
+        android:layout_width="380dp"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/downloaded_track_image"
-            android:layout_width="50dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:src="@drawable/cover"
-            android:visibility="gone" />
+             />
 
-        <TextView
-            android:id="@+id/downloaded_track_name"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignTop="@+id/downloaded_track_image"
-            android:layout_alignRight="@+id/downloaded_track_image"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="5sp"
-            android:gravity="fill_vertical"
-            android:text="title"
-            android:textColor="#ECF0F1"
-            android:textSize="@dimen/list_item_text_size"
-            android:textStyle="bold" />
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/downloaded_track_image"
+                android:padding="10dp"
+            >
+            <TextView
+                    android:id="@+id/downloaded_track_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="fill_vertical"
+                    android:text="title"
+                    android:textColor="#ECF0F1"
+                    android:textSize="@dimen/list_item_text_size"
+                    android:textStyle="bold"
+                    />
 
-        <TextView
-            android:id="@+id/downloaded_artist_name"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_below="@+id/downloaded_track_name"
-            android:layout_alignStart="@+id/downloaded_track_name"
-            android:gravity="fill_vertical"
-            android:text="artist"
-            android:textColor="#ECF0F1"
-            android:textSize="@dimen/list_sub_item_text_size" />
+            <TextView
+                    android:id="@+id/downloaded_artist_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/downloaded_track_name"
+                    android:layout_alignStart="@+id/downloaded_track_name"
+                    android:gravity="fill_vertical"
+                    android:text="artist"
+                    android:textColor="#ECF0F1"
+                    android:textSize="@dimen/list_sub_item_text_size" />
+
+            <TextView
+                    android:id="@+id/downloaded_track_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/downloaded_artist_name"
+                    android:layout_alignStart="@+id/downloaded_artist_name"
+                    android:gravity="fill_vertical"
+                    android:text="@string/track_length_txt"
+                    android:textColor="#8C8C8C"
+                    android:textSize="@dimen/list_sub_sub_item_text_size" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 <!--    <ImageView-->
@@ -60,6 +75,7 @@
         android:id="@+id/downloaded_file_options"
         android:layout_width="30sp"
         android:layout_height="50sp"
+        android:paddingTop="20dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5sp"
         android:gravity="center"
