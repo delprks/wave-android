@@ -105,7 +105,12 @@ class DownloadListViewRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
-        val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
+
+        val itemTextSizeLimit =
+            if (Display.isPortrait(parentActivity!!.resources))
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_portrait)
+            else
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_landscape)
 
         holder.downloadTrackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
         holder.downloadTrackArtist.text = track.artist ?: "Unknown artist"

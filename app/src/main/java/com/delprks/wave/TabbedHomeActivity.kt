@@ -25,6 +25,7 @@ import com.delprks.wave.sections.SettingsFragment
 import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
 import com.delprks.wave.services.PlaylistService
+import com.delprks.wave.util.Display
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -127,9 +128,7 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         val player = findViewById<SlidingUpPanelLayout>(R.id.slidingUpPlayer)
 
-        val orientation = resources.configuration.orientation
-
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (Display.isLandscape(resources)) {
             player.panelHeight = 0
         }
 

@@ -19,8 +19,10 @@
     <string name="playlist_details_modify_playlist_name">Title:</string>
     <string name="playlist_details_modify_save_btn_txt">SAVE</string>
     <string name="playlist_item_count_txt">%1$s tracks (%2$s)</string>
-    <integer name="list_header_text_size_limit">35</integer>
-    <integer name="list_item_text_size_limit">28</integer>
+    <integer name="list_header_text_size_limit_portrait">35</integer>
+    <integer name="list_header_text_size_limit_landscape">66</integer>
+    <integer name="list_item_text_size_limit_portrait">28</integer>
+    <integer name="list_item_text_size_limit_landscape">66</integer>
     <string name="downloaded_list_content_description">Downloaded list</string>
     <string name="library_list_content_description">Library list</string>
     <string name="player_content_description">Track list</string>

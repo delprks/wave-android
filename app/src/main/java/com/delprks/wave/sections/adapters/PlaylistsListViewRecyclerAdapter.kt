@@ -21,6 +21,7 @@ import com.delprks.wave.sections.ModifyPlaylistDetailsFragment
 import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.sections.PlaylistDetailsFragment
 import com.delprks.wave.services.PlaylistService
+import com.delprks.wave.util.Display
 import com.delprks.wave.util.ImageCache
 import com.delprks.wave.util.ReservedPlaylists
 import com.delprks.wave.util.TextFormatter
@@ -54,7 +55,15 @@ class PlaylistsListViewRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val playlist = playlists[position]
-        holder.playlistName.text = TextFormatter.shorten(playlist.name, 23)
+
+        val itemTextSizeLimit =
+            if (Display.isPortrait(parentActivity!!.resources))
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_portrait)
+            else
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_landscape)
+
+        holder.playlistName.text = TextFormatter.shorten(playlist.name, itemTextSizeLimit)
+
         val playlistDuration = DateUtils.formatElapsedTime(playlist.duration)
         holder.playlistSize.text = parentActivity!!.resources.getString(R.string.playlist_item_count_txt, playlist.size, playlistDuration)
 

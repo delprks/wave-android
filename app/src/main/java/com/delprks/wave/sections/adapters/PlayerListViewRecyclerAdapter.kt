@@ -16,16 +16,13 @@ import com.delprks.wave.domain.ContainerLocation
 import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.services.PlaylistService
-import com.delprks.wave.util.MetadataRetriever
-import com.delprks.wave.util.ReservedPlaylists
+import com.delprks.wave.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
-import com.delprks.wave.util.SwipeDetector
 
 import com.delprks.wave.util.SwipeDetector.SwipeTypeEnum
-import com.delprks.wave.util.TextFormatter
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
@@ -89,7 +86,11 @@ class PlayerListViewRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
-        val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
+        val itemTextSizeLimit =
+            if (Display.isPortrait(parentActivity!!.resources))
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_portrait)
+            else
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_landscape)
 
         holder.trackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
         holder.trackArtist.text = track.artist ?: "Unknown artist"
