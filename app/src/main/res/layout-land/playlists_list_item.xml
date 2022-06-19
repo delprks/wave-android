@@ -6,7 +6,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_marginBottom="2sp"
         android:clickable="true"
-        android:padding="4sp"
         android:background="@drawable/list_item_background"
         android:gravity="fill_horizontal|center"
         android:focusable="true">
@@ -14,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/playlist_information"
             android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="0dp">
 
@@ -41,9 +40,11 @@
                 android:layout_marginLeft="7dp"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                android:layout_marginTop="15dp"
                 app:layout_constraintStart_toEndOf="@+id/playlist_image"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/playlist_reorder" />
+                app:layout_constraintRight_toLeftOf="@+id/playlist_reorder"
+                />
 
         <TextView
                 android:id="@+id/playlist_item_count"
@@ -56,13 +57,14 @@
                 android:textColor="@color/light_white"
                 android:textSize="14dp"
                 app:layout_constraintStart_toEndOf="@+id/playlist_image"
-                app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
+                app:layout_constraintTop_toBottomOf="@+id/playlist_name"
+                 />
 
         <ImageView
                 android:src="@drawable/reorder"
                 android:id="@+id/playlist_reorder"
                 android:layout_width="40dp"
-                android:layout_height="70sp"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 app:layout_constraintStart_toEndOf="@+id/playlist_name"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -70,13 +72,14 @@
         <TextView
                 android:id="@+id/playlist_options"
                 android:layout_width="40dp"
-                android:layout_height="70sp"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="&#8942;"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/playlist_reorder"
+                android:textSize="@dimen/list_item_menu_size"
                 app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
