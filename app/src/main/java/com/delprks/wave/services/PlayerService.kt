@@ -58,6 +58,10 @@ class PlayerService : Service() {
     private val mediaSourceFactory: DefaultMediaSourceFactory
     private var playerCollapsed = true
 
+    fun getPlayer(): ExoPlayer {
+        return player
+    }
+
     // Binder given to clients
     private val binder = LocalBinder()
 
@@ -210,7 +214,7 @@ class PlayerService : Service() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun play(position: Int, shuffled: Boolean = false, paused: Boolean = false, initial: Boolean = false): ExoPlayer {
+    fun play(position: Int, shuffled: Boolean = false, paused: Boolean = false, initial: Boolean = false, seekTo: Long = 0): ExoPlayer {
         val track = tracks[position]
         val orientation = resources.configuration.orientation
 
@@ -228,7 +232,7 @@ class PlayerService : Service() {
             CoroutineScope(Dispatchers.Main).launch {
                 val trackStatus = LatestTrack(
                     trackId = track.id,
-                    trackProgress = 0,
+                    trackProgress = seekTo,
                     shuffled = shuffled,
                     playlistId = playlistId
                 )
@@ -239,7 +243,7 @@ class PlayerService : Service() {
         }
 
         player.shuffleModeEnabled = shuffled
-        player.seekTo(position, 0)
+        player.seekTo(position, seekTo)
 
         val trackTitle: String = track.name
         val trackArtist: String = track.artist ?: "Unknown artist"

@@ -3,35 +3,35 @@ package com.delprks.wave.sections
 import android.app.Activity
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_MUTABLE
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.delprks.wave.*
-import com.delprks.wave.sections.adapters.PlaylistsListViewRecyclerAdapter
-import java.util.*
-import android.widget.*
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.*
 import com.delprks.wave.domain.ContainerLocation
 import com.delprks.wave.domain.Playlist
+import com.delprks.wave.sections.adapters.PlaylistsListViewRecyclerAdapter
 import com.delprks.wave.services.PlayerService
 import com.delprks.wave.services.PlaylistService
 import com.delprks.wave.util.PlaylistBuilder
 import com.delprks.wave.util.ReservedPlaylists
 import kotlinx.coroutines.*
 import wave.R
-import kotlin.collections.ArrayList
+import java.util.*
 
 class PlaylistFragment : Fragment() {
 
@@ -42,9 +42,18 @@ class PlaylistFragment : Fragment() {
     private lateinit var notificationManager: NotificationManagerCompat
     private lateinit var progressNotification: NotificationCompat.Builder
     private val maxProgress = 100
+    private var tabbedHomeActivity: TabbedHomeActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (context is Activity) {
+            tabbedHomeActivity = (context as TabbedHomeActivity)
+        }
+    }
 
     fun playerService(): PlayerService? {
-        return (requireActivity() as TabbedHomeActivity).playerService
+        return tabbedHomeActivity?.playerService
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -26,6 +26,7 @@ import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
 import com.delprks.wave.services.PlaylistService
 import com.delprks.wave.util.Display
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -78,10 +79,32 @@ class TabbedHomeActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onDestroy() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val latestTrack: LatestTrack? = PlaylistService.getLatestTrack(App.getDB())
+
+            latestTrack?.let { trackStatus ->
+                trackStatus.trackProgress = playerService?.getPlayer()?.currentPosition ?: 0
+                PlaylistService.updateTrackStatus(App.getDB(), trackStatus)
+                Log.d("player", "exiting. updated latest track: $trackStatus")
+            }
+        }
+
         unbindService(connection)
         mBound = false
 
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (playerService == null) {
+            Intent(this, PlayerService::class.java).also { intent ->
+                bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
+        }
+
+        mBound = true
     }
 
     private fun setStatusBarGradiant(activity: Activity) {
@@ -92,6 +115,15 @@ class TabbedHomeActivity : AppCompatActivity() {
         window.statusBarColor = activity.resources.getColor(android.R.color.transparent)
         window.navigationBarColor = activity.resources.getColor(android.R.color.transparent)
         window.setBackgroundDrawable(background)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        if (playerService != null) {
+            outState.putLong("current_position", playerService!!.getPlayer().currentPosition)
+            outState.putBoolean("is_playing", playerService!!.getPlayer().playWhenReady)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -150,7 +182,22 @@ class TabbedHomeActivity : AppCompatActivity() {
                             val position = playlistWithTracks.tracks.indexOf(track)
 
                             playerService?.loadSongs(activity, playlistWithTracks.tracks, playlistId, null, false)
-                            playerService?.play(position, shuffled = trackStatus.shuffled, paused = true, initial = true)
+
+                            if (savedInstanceState != null) {
+                                val orientation = resources.configuration.orientation
+
+                                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                                    activity.findViewById<PlayerView>(R.id.main_media_player).player = playerService?.getPlayer()
+                                }
+
+                                activity.findViewById<PlayerView>(R.id.mini_media_player).player = playerService?.getPlayer()
+
+                                val isPlaying = savedInstanceState.getBoolean("is_playing")
+
+                                playerService?.play(position, shuffled = trackStatus.shuffled, paused = !isPlaying, initial = true, savedInstanceState.getLong("current_position"))
+                            } else {
+                                playerService?.play(position, shuffled = trackStatus.shuffled, paused = true, initial = true, trackStatus.trackProgress)
+                            }
                         } else {
                             player.panelHeight = 0
                         }
