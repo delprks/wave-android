@@ -1,7 +1,9 @@
 package com.delprks.wave.sections.adapters
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Build
+import android.text.format.DateUtils
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,15 +16,13 @@ import com.delprks.wave.domain.ContainerLocation
 import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.services.PlaylistService
-import com.delprks.wave.util.ReservedPlaylists
+import com.delprks.wave.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
-import com.delprks.wave.util.SwipeDetector
 
 import com.delprks.wave.util.SwipeDetector.SwipeTypeEnum
-import com.delprks.wave.util.TextFormatter
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
@@ -86,10 +86,25 @@ class PlayerListViewRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val track = tracks[position]
-        val itemTextSizeLimit = parentActivity!!.resources.getInteger(R.integer.list_item_text_size_limit)
+        val itemTextSizeLimit =
+            if (Display.isPortrait(parentActivity!!.resources))
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_portrait)
+            else
+                parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_landscape)
 
         holder.trackName.text = TextFormatter.shorten(track.name, itemTextSizeLimit)
-        holder.trackArtist.text = track.artist
+        holder.trackArtist.text = track.artist ?: "Unknown artist"
+
+        val trackDuration = DateUtils.formatElapsedTime(track.duration!!)
+
+        holder.trackLength.text = parentActivity.resources.getString(R.string.track_length_txt, trackDuration)
+
+        if (track.imageByteArray != null) {
+            holder.trackImage.setImageBitmap(MetadataRetriever.byteToBitmap(track.imageByteArray))
+        } else {
+            holder.trackImage.setImageResource(R.drawable.cover)
+        }
+
 
         if (track.location == ContainerLocation.REMOTE) {
             holder.itemView.findViewById<RelativeLayout>(R.id.player_list_item).background = ResourcesCompat.getDrawable(
@@ -156,24 +171,28 @@ class PlayerListViewRecyclerAdapter(
             notifyItemChanged(selectedPos)
         }
 
-        val mediaPlayer = parentActivity!!.findViewById<PlayerView>(R.id.main_media_player)
+        val orientation = parentActivity.resources.configuration.orientation
 
-        SwipeDetector(mediaPlayer).setOnSwipeListener { _, swipeType ->
-            if (swipeType == SwipeTypeEnum.LEFT_TO_RIGHT) {
-                selectedPosition = if (selectedPos == 0) 0 else selectedPos - 1
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val mediaPlayer = parentActivity.findViewById<PlayerView>(R.id.main_media_player)
 
-                playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
-                playlistFragment?.playerService()?.play(selectedPosition)
-            } else if (swipeType == SwipeTypeEnum.RIGHT_TO_LEFT) {
-                selectedPosition = if (selectedPos == tracks.size - 1) 0 else selectedPos + 1
+            SwipeDetector(mediaPlayer).setOnSwipeListener { _, swipeType ->
+                if (swipeType == SwipeTypeEnum.LEFT_TO_RIGHT) {
+                    selectedPosition = if (selectedPos == 0) 0 else selectedPos - 1
 
-                playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
-                playlistFragment?.playerService()?.play(selectedPosition)
+                    playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
+                    playlistFragment?.playerService()?.play(selectedPosition)
+                } else if (swipeType == SwipeTypeEnum.RIGHT_TO_LEFT) {
+                    selectedPosition = if (selectedPos == tracks.size - 1) 0 else selectedPos + 1
+
+                    playlistFragment?.playerService()?.loadSongs(parentActivity, tracks, playlistId, playerListener, false)
+                    playlistFragment?.playerService()?.play(selectedPosition)
+                }
+
+                notifyItemChanged(selectedPos)
+                selectedPos = selectedPosition
+                notifyItemChanged(selectedPos)
             }
-
-            notifyItemChanged(selectedPos)
-            selectedPos = selectedPosition
-            notifyItemChanged(selectedPos)
         }
 
         parentActivity.findViewById<Button>(R.id.player_activity_play_btn).setOnClickListener {
@@ -289,6 +308,7 @@ class PlayerListViewRecyclerAdapter(
         val trackName: TextView = binding.playerSongName
         val trackImage: ImageView = binding.playerSongImage
         val trackArtist: TextView = binding.playerArtistName
+        val trackLength: TextView = binding.playerTrackLength
         val menuOptions: TextView = binding.playerTrackOptions
 
         override fun toString(): String {

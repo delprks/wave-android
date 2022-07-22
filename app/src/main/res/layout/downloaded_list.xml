@@ -9,6 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/downloaded_list"
+        android:contentDescription="@string/downloaded_list_content_description"
         android:name="wave.ui.main.DownloadedFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

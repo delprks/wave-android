@@ -1,41 +1,44 @@
 package com.delprks.wave
 
-import android.os.Build
-import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.delprks.wave.sections.adapters.SectionsPagerAdapter
-import androidx.appcompat.widget.Toolbar
-import android.widget.RelativeLayout
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.viewpager2.widget.ViewPager2
-import com.delprks.wave.sections.SettingsFragment
-import com.google.android.material.tabs.TabLayoutMediator
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener
-import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.Path
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
+import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.*
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.viewpager2.widget.ViewPager2
+import com.delprks.wave.domain.LatestTrack
+import com.delprks.wave.sections.SettingsFragment
+import com.delprks.wave.sections.adapters.SectionsPagerAdapter
 import com.delprks.wave.services.PlayerService
+import com.delprks.wave.services.PlaylistService
+import com.delprks.wave.util.Display
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import android.app.ActivityManager
-import com.delprks.wave.domain.LatestTrack
-import com.delprks.wave.services.PlaylistService
 import wave.R
 import wave.databinding.ActivityTabbedHomeBinding
+import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.Path
 
 class TabbedHomeActivity : AppCompatActivity() {
 
@@ -76,10 +79,32 @@ class TabbedHomeActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onDestroy() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val latestTrack: LatestTrack? = PlaylistService.getLatestTrack(App.getDB())
+
+            latestTrack?.let { trackStatus ->
+                trackStatus.trackProgress = playerService?.getPlayer()?.currentPosition ?: 0
+                PlaylistService.updateTrackStatus(App.getDB(), trackStatus)
+                Log.d("player", "exiting. updated latest track: $trackStatus")
+            }
+        }
+
         unbindService(connection)
         mBound = false
 
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (playerService == null) {
+            Intent(this, PlayerService::class.java).also { intent ->
+                bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
+        }
+
+        mBound = true
     }
 
     private fun setStatusBarGradiant(activity: Activity) {
@@ -92,9 +117,25 @@ class TabbedHomeActivity : AppCompatActivity() {
         window.setBackgroundDrawable(background)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        if (playerService != null) {
+            outState.putLong("current_position", playerService!!.getPlayer().currentPosition)
+            outState.putBoolean("is_playing", playerService!!.getPlayer().playWhenReady)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.sections_container, App.getPlaylistFragment(), "dashboard")
+//                .commit()
+//        }
+
         binding = ActivityTabbedHomeBinding.inflate(layoutInflater)
 
         window.navigationBarColor = resources.getColor(R.color.black)
@@ -119,6 +160,10 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         val player = findViewById<SlidingUpPanelLayout>(R.id.slidingUpPlayer)
 
+        if (Display.isLandscape(resources)) {
+            player.panelHeight = 0
+        }
+
         // load latest played track/playlist
         CoroutineScope(Dispatchers.Main).launch {
             val latestTrack: LatestTrack? = PlaylistService.getLatestTrack(App.getDB())
@@ -137,7 +182,22 @@ class TabbedHomeActivity : AppCompatActivity() {
                             val position = playlistWithTracks.tracks.indexOf(track)
 
                             playerService?.loadSongs(activity, playlistWithTracks.tracks, playlistId, null, false)
-                            playerService?.play(position, shuffled = trackStatus.shuffled, paused = true, initial = true)
+
+                            if (savedInstanceState != null) {
+                                val orientation = resources.configuration.orientation
+
+                                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                                    activity.findViewById<PlayerView>(R.id.main_media_player).player = playerService?.getPlayer()
+                                }
+
+                                activity.findViewById<PlayerView>(R.id.mini_media_player).player = playerService?.getPlayer()
+
+                                val isPlaying = savedInstanceState.getBoolean("is_playing")
+
+                                playerService?.play(position, shuffled = trackStatus.shuffled, paused = !isPlaying, initial = true, savedInstanceState.getLong("current_position"))
+                            } else {
+                                playerService?.play(position, shuffled = trackStatus.shuffled, paused = true, initial = true, trackStatus.trackProgress)
+                            }
                         } else {
                             player.panelHeight = 0
                         }
@@ -186,11 +246,19 @@ class TabbedHomeActivity : AppCompatActivity() {
 
         val tabs: TabLayout = binding.tabs
 
+//        val contentHeight = 600 //activity.window.findViewById<View>(Window.ID_ANDROID_CONTENT).run { bottom - top }
+//        // 112dp is a deduction, 56dp for Toolbar and 56dp for BottomNavigationTab
+//        val tabLayoutWidth =  contentHeight - dpToPx(activity,112).toInt()
+//        tabs.layoutParams.width = 2400
+//        tabs.layoutParams.height = 400
+        // 44dp is basically half of assigned height[![enter image description here][2]][2]
+//        tabs.translationX = (-90).toFloat()// (tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat() * -1
+//        tabs.translationY = 0.toFloat() //(tabLayoutWidth / 2 - dpToPx(activity, 44)).toFloat()
+
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.icon = ResourcesCompat.getDrawable(this.resources, this.tabs[position].second, null)
             tab.customView = View.inflate(applicationContext, R.layout.custom_view_tab, null)
-            tab.customView?.findViewById<TextView>(R.id.view_home_tab_text)?.text =
-                this.resources.getString(this.tabs[position].first)
+            tab.customView?.findViewById<TextView>(R.id.view_home_tab_text)?.text = this.resources.getString(this.tabs[position].first)
             tab.customView?.isSelected = tab.customView!!.isSelected
         }.attach()
     }

@@ -12,6 +12,7 @@ import com.delprks.wave.domain.Playlist
 import com.delprks.wave.sections.PlaylistFragment
 import com.delprks.wave.util.ImageCache
 import java.security.SecureRandom
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLContext
@@ -43,6 +44,11 @@ class App : Application(){
                 chain: Array<out X509Certificate>?,
                 authType: String?
             ) {
+                try {
+                    chain!![0].checkValidity()
+                } catch (e: Exception) {
+                    throw CertificateException("Certificate not valid or trusted.")
+                }
             }
 
             override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()

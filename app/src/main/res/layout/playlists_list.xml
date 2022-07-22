@@ -5,40 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/add_playlist_btn"
+    <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/greeting_text"
-            android:layout_marginTop="68sp"
-            android:backgroundTint="#ab0000"
-            android:text="Add a Playlist"
-            android:textColor="#ECF0F1"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/greeting_text"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="Good evening!"
-            android:textColor="#ECF0F1"
-            android:textSize="25sp" />
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/playlists_list"
-            android:name="wave.ui.main.PlaylistsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="140sp"
-            android:transcriptMode="normal"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".sections.PlaylistFragment"
-            tools:listitem="@layout/playlists_list_item" />
+            <Button
+                android:id="@+id/add_playlist_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/greeting_text"
+                android:layout_marginTop="68sp"
+                android:backgroundTint="#C50808"
+                android:text="Add a Playlist"
+                android:textColor="#ECF0F1"
+                android:textSize="16sp" />
 
-    </RelativeLayout>
+            <TextView
+                    android:id="@+id/greeting_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Good evening!"
+                    android:textColor="#ECF0F1"
+                    android:textSize="25sp"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:layout_marginEnd="@dimen/text_margin"
+                    android:layout_marginBottom="@dimen/text_margin" />
+
+            <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/playlists_list"
+                    android:name="wave.ui.main.PlaylistsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="140sp"
+                    android:transcriptMode="normal"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:context=".sections.PlaylistFragment"
+                    tools:listitem="@layout/playlists_list_item" />
+
+        </RelativeLayout>
+    </ScrollView>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

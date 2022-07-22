@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:fillViewport="true"
     tools:context=".TabbedHomeActivity">
 
     <RelativeLayout
@@ -16,36 +17,36 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/main_header_selector"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/Theme.Wave.AppBarOverlay"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            android:layout_alignParentTop="true"
-            app:title="Wave" />
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_header_selector"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/Theme.Wave.AppBarOverlay"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                android:layout_alignParentTop="true"
+                app:title="Wave" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/sections_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/tabs"
-            android:layout_below="@id/toolbar"
-            android:background="@color/activity_bg" />
+                android:id="@+id/sections_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/tabs"
+                android:layout_below="@id/toolbar"
+                android:background="@color/activity_bg" />
 
         <!-- to show icons next to text in tabs: app:tabInlineLabel="true"-->
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/secondary"
-            app:tabIconTint="@color/tab_state_colors"
-            app:tabIndicatorHeight="0dp"
-            app:tabTextColor="@color/light_white"
-            tools:ignore="SpeakableTextPresentCheck" />
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@color/secondary"
+                app:tabIconTint="@color/tab_state_colors"
+                app:tabIndicatorHeight="0dp"
+                app:tabTextColor="@color/light_white"
+                tools:ignore="SpeakableTextPresentCheck" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -175,8 +176,8 @@
 
                 <ImageView
                     android:id="@+id/mini_player_track_image"
-                    android:layout_width="68dp"
-                    android:layout_height="@dimen/mini_player_height"
+                    android:layout_width="@dimen/mini_player_image_dimension"
+                    android:layout_height="@dimen/mini_player_image_dimension"
                     android:background="@color/black"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cover" />
@@ -186,8 +187,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_alignTop="@+id/mini_player_track_image"
+                    android:layout_alignStart="@+id/mini_player_track_image"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="73dp"
+                    android:layout_marginStart="83dp"
                     android:layout_marginTop="12dp"
                     android:gravity="fill_vertical"
                     android:text="Title"

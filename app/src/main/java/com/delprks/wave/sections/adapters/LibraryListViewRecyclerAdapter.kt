@@ -104,14 +104,24 @@ class LibraryListViewRecyclerAdapter(
 
         // set the parent dir color
         if (item.id == "prev_dir") {
-            val headerTextSizeLimit = parentActivity.resources.getInteger(R.integer.list_header_text_size_limit)
+            val headerTextSizeLimit =
+                if (Display.isPortrait(parentActivity.resources))
+                    parentActivity.resources.getInteger(R.integer.list_header_text_size_limit_portrait)
+                else
+                    parentActivity.resources.getInteger(R.integer.list_header_text_size_limit_landscape)
+
             holder.container.text = TextFormatter.shorten(item.name, headerTextSizeLimit)
 
             holder.itemView.findViewById<TextView>(R.id.content)
                 .setTextSize(TypedValue.COMPLEX_UNIT_PX, headerTextSize)
             holder.itemView.findViewById<TextView>(R.id.content).setTextColor(headerTextColor)
         } else {
-            val itemTextSizeLimit = parentActivity.resources.getInteger(R.integer.list_item_text_size_limit)
+            val itemTextSizeLimit =
+                if (Display.isPortrait(parentActivity.resources))
+                    parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_portrait)
+                else
+                    parentActivity.resources.getInteger(R.integer.list_item_text_size_limit_landscape)
+
             holder.container.text = TextFormatter.shorten(item.name, itemTextSizeLimit)
 
             holder.itemView.findViewById<TextView>(R.id.content)

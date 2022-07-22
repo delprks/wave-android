@@ -3,38 +3,39 @@ package com.delprks.wave.services
 import android.app.*
 import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Binder
-import android.support.v4.media.session.MediaSessionCompat
-import android.widget.TextView
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import android.os.Build
 import android.os.IBinder
-import androidx.annotation.RequiresApi
-import android.support.v4.media.MediaMetadataCompat
-import com.google.android.exoplayer2.Player
 import android.support.v4.media.MediaDescriptionCompat
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
-import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.HttpDataSource
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import com.delprks.wave.App
 import com.delprks.wave.NotificationManager
-import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.domain.LatestTrack
+import com.delprks.wave.domain.TrackContainer
 import com.delprks.wave.security.SettingsManager
 import com.google.android.exoplayer2.C.WAKE_MODE_NETWORK
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.MediaMetadata.PICTURE_TYPE_FRONT_COVER
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,10 @@ class PlayerService : Service() {
     private var trackSelector: DefaultTrackSelector
     private val mediaSourceFactory: DefaultMediaSourceFactory
     private var playerCollapsed = true
+
+    fun getPlayer(): ExoPlayer {
+        return player
+    }
 
     // Binder given to clients
     private val binder = LocalBinder()
@@ -107,7 +112,12 @@ class PlayerService : Service() {
             tracksMap = HashMap()
 
             player.also { exoPlayer ->
-                activity.findViewById<PlayerView>(R.id.main_media_player).player = exoPlayer
+                val orientation = resources.configuration.orientation
+
+                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    activity.findViewById<PlayerView>(R.id.main_media_player).player = exoPlayer
+                }
+
                 activity.findViewById<PlayerView>(R.id.mini_media_player).player = exoPlayer
 
                 tracks.forEach { track ->
@@ -169,9 +179,13 @@ class PlayerService : Service() {
             player.addListener(object : Player.Listener {
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
+                    val orientation = resources.configuration.orientation
 
-                    activity.findViewById<TextView>(R.id.player_track_title).text = activity.resources.getString(R.string.player_track_title_txt, mediaItem?.mediaMetadata?.title)
-                    activity.findViewById<TextView>(R.id.player_track_artist).text = activity.resources.getString(R.string.player_track_artist_txt, mediaItem?.mediaMetadata?.artist)
+                    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                        activity.findViewById<TextView>(R.id.player_track_title).text = activity.resources.getString(R.string.player_track_title_txt, mediaItem?.mediaMetadata?.title)
+                        activity.findViewById<TextView>(R.id.player_track_artist).text = activity.resources.getString(R.string.player_track_artist_txt, mediaItem?.mediaMetadata?.artist)
+                    }
+
                     activity.findViewById<TextView>(R.id.mini_player_track_title).text = mediaItem?.mediaMetadata?.title
                     activity.findViewById<TextView>(R.id.mini_player_track_artist).text = mediaItem?.mediaMetadata?.artist ?: "Unknown artist"
                     activity.findViewById<ImageView>(R.id.mini_player_track_image).setImageURI(tracksMap[mediaItem?.mediaId]?.imageBitmapUri)
@@ -200,13 +214,16 @@ class PlayerService : Service() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun play(position: Int, shuffled: Boolean = false, paused: Boolean = false, initial: Boolean = false): ExoPlayer {
+    fun play(position: Int, shuffled: Boolean = false, paused: Boolean = false, initial: Boolean = false, seekTo: Long = 0): ExoPlayer {
         val track = tracks[position]
+        val orientation = resources.configuration.orientation
 
         if (playerCollapsed) {
             val playerView = activity.findViewById<SlidingUpPanelLayout>(R.id.slidingUpPlayer)
 
-            playerView.panelHeight = activity.resources.getDimensionPixelSize(R.dimen.mini_player_height)
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                playerView.panelHeight = activity.resources.getDimensionPixelSize(R.dimen.mini_player_height)
+            }
 
             playerCollapsed = false
         }
@@ -215,7 +232,7 @@ class PlayerService : Service() {
             CoroutineScope(Dispatchers.Main).launch {
                 val trackStatus = LatestTrack(
                     trackId = track.id,
-                    trackProgress = 0,
+                    trackProgress = seekTo,
                     shuffled = shuffled,
                     playlistId = playlistId
                 )
@@ -226,13 +243,16 @@ class PlayerService : Service() {
         }
 
         player.shuffleModeEnabled = shuffled
-        player.seekTo(position, 0)
+        player.seekTo(position, seekTo)
 
         val trackTitle: String = track.name
         val trackArtist: String = track.artist ?: "Unknown artist"
 
-        activity.findViewById<TextView>(R.id.player_track_title).text = activity.resources.getString(R.string.player_track_title_txt, trackTitle)
-        activity.findViewById<TextView>(R.id.player_track_artist).text = activity.resources.getString(R.string.player_track_artist_txt, trackArtist)
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            activity.findViewById<TextView>(R.id.player_track_title).text = activity.resources.getString(R.string.player_track_title_txt, trackTitle)
+            activity.findViewById<TextView>(R.id.player_track_artist).text = activity.resources.getString(R.string.player_track_artist_txt, trackArtist)
+        }
+
         activity.findViewById<TextView>(R.id.mini_player_track_title).text = trackTitle
         activity.findViewById<TextView>(R.id.mini_player_track_artist).text = trackArtist
 

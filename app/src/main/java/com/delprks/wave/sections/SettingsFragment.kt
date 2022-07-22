@@ -60,31 +60,43 @@ class SettingsFragment : Fragment() {
         }
 
         saveButton?.setOnClickListener {
-            val name = settingsNameTextField?.text.toString()
-            val host = hostTextField?.text.toString()
-            val mediaPath = mediaPathTextField?.text.toString()
-            val username = usernameTextField?.text.toString()
-            val password = passwordTextField?.text.toString()
+            val name = settingsNameTextField?.text.toString().trim()
+            val host = hostTextField?.text.toString().trim()
+            val mediaPath = mediaPathTextField?.text.toString().trim()
+            val username = usernameTextField?.text.toString().trim()
+            val password = passwordTextField?.text.toString().trim()
 
-            CoroutineScope(Dispatchers.Main).launch {
-                val updatedSettings = RemoteSettings(
-                    SettingsService.WEB_DAV_ID,
-                    RemoteSourceType.WEB_DAV,
-                    name,
-                    host,
-                    mediaPath
-                )
+            if (name.isEmpty()) {
+                Toast.makeText(activity, "Please provide the name", Toast.LENGTH_SHORT).show()
+            } else if (host.isEmpty()) {
+                Toast.makeText(activity, "Please provide the host", Toast.LENGTH_SHORT).show()
+            } else if (mediaPath.isEmpty()) {
+                Toast.makeText(activity, "Please provide the media path", Toast.LENGTH_SHORT).show()
+            } else if (username.isEmpty()) {
+                Toast.makeText(activity, "Please provide the username", Toast.LENGTH_SHORT).show()
+            } else if (password.isEmpty()) {
+                Toast.makeText(activity, "Please provide the password", Toast.LENGTH_SHORT).show()
+            } else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val updatedSettings = RemoteSettings(
+                        SettingsService.WEB_DAV_ID,
+                        RemoteSourceType.WEB_DAV,
+                        name,
+                        host,
+                        mediaPath
+                    )
 
-                SettingsService.addWebDavRemoteSettings(App.getDB(), updatedSettings)
-                SettingsManager.addAccount(activity?.applicationContext!!, username, password)
+                    SettingsService.addWebDavRemoteSettings(App.getDB(), updatedSettings)
+                    SettingsManager.addAccount(activity?.applicationContext!!, username, password)
 
-                Toast.makeText(activity, "Saved successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Saved successfully", Toast.LENGTH_SHORT).show()
 
-                // hide keyboard
-                val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                    // hide keyboard
+                    val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
 
-                requireActivity().supportFragmentManager.popBackStack()
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
             }
         }
     }

@@ -19,6 +19,21 @@
     <string name="playlist_details_modify_playlist_name">Title:</string>
     <string name="playlist_details_modify_save_btn_txt">SAVE</string>
     <string name="playlist_item_count_txt">%1$s tracks (%2$s)</string>
-    <integer name="list_header_text_size_limit">35</integer>
-    <integer name="list_item_text_size_limit">58</integer>
+    <integer name="list_header_text_size_limit_portrait">35</integer>
+    <integer name="list_header_text_size_limit_landscape">66</integer>
+    <integer name="list_item_text_size_limit_portrait">28</integer>
+    <integer name="list_item_text_size_limit_landscape">66</integer>
+    <string name="downloaded_list_content_description">Downloaded list</string>
+    <string name="library_list_content_description">Library list</string>
+    <string name="player_content_description">Track list</string>
+    <string name="playlist_close_button_content_description">Playlist close button</string>
+    <string name="settings_content_description">Settings</string>
+    <string name="password_input_box_hint">Password</string>
+    <string name="username_input_box_hint">Username</string>
+    <string name="webdav_server_name_input_box_hint">WebDav server name</string>
+    <string name="remote_host_input_box_hint">WebDav host URL</string>
+    <string name="remote_media_path_input_box_hint">WebDav media path</string>
+    <string name="home_tab_name">Home</string>
+    <string name="playlist_image_content_description">Playlist image</string>
+    <string name="track_length_txt">%1$s</string>
 </resources>
